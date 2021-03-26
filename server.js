@@ -20,17 +20,10 @@ const client = new MongoClient(uri, {
   app.post("/register", (req, res) => {
     await collection.insertMany([
         {
-          from: "user",
-          msg: req.body.msg,
+          user: req.body.user,
+          password: req.body.password,
+          dateRegistered: new Date()
         },
-        {
-          from: "password",
-          msg: réponse,
-        },
-        {
-            from: "date-registration",
-            msg: new Date(),
-          },
       ]);
     res.send(collection.find().toArray());
   });
