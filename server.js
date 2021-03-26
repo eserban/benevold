@@ -18,7 +18,7 @@ const client = new MongoClient(uri, {
 
   // définir le point d'entrée `GET /` qui répond "Bonjour !" à chaque requête reçue
   app.post("/register", async (req, res) => {
-    await collection.insertMany([
+    await registerCollection.insertMany([
         {
           user: req.body.user,
           password: req.body.password,
