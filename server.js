@@ -38,7 +38,7 @@ const client = new MongoClient(uri, {
   app.get("/users", async (req, res) => {
       const userId = req.query.id
       if(userId){
-        res.send(userId);
+        res.send(await registerCollection.find({ "_id": `${userId}` }).toArray());
       }else{
           res.send(await registerCollection.find().toArray());
       }
