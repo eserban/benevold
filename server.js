@@ -19,7 +19,7 @@ const client = new MongoClient(uri, {
   // définir le point d'entrée `POST /` pour l'enregistrement d'un nouvel utilisateur
   app.post("/register", async (req, res) => {
       const user = await registerCollection.find({"user": req.body.user}).toArray();
-      if(!user){
+      if(user === []){
         await registerCollection.insertMany([
             {
               user: req.body.user,
