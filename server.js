@@ -28,8 +28,10 @@ const client = new MongoClient(uri, {
               role: req.body.role
             },
           ]);
+        res.send({"success": "User added"});
+      }else{
+        res.send({"error": "registration not possible"});
       }
-    res.send(user);
   });
 
   app.get("/get/all/users", async (req, res) => {
