@@ -25,11 +25,11 @@ const client = new MongoClient(uri, {
           dateRegistered: new Date()
         },
       ]);
-    res.send(registerCollection.find().toArray());
+    console.log(registerCollection.find().toArray());
   });
 
   app.get("/get/all/users", (req, res) => {
-        res.send(registerCollection.find().toArray());
+    console.log(registerCollection.find().toArray());
   });
   // demander au serveur applicatif d'attendre des requêtes depuis le port spécifié plus haut
   app.listen(PORT, () => {
