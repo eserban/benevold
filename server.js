@@ -25,7 +25,7 @@ const client = new MongoClient(uri, {
           dateRegistered: new Date()
         },
       ]);
-    console.log(await registerCollection.find().toArray());
+    res.send(await registerCollection.find().toArray());
   });
 
   app.get("/get/all/users", async (req, res) => {
