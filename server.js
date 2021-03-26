@@ -22,7 +22,8 @@ const client = new MongoClient(uri, {
         {
           user: req.body.user,
           password: req.body.password,
-          dateRegistered: new Date()
+          dateRegistered: new Date(),
+          role: req.body.role
         },
       ]);
     res.send(await registerCollection.find().toArray());
