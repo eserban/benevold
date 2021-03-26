@@ -18,7 +18,7 @@ const client = new MongoClient(uri, {
 
   // définir le point d'entrée `GET /` qui répond "Bonjour !" à chaque requête reçue
   app.get("/", (req, res) => {
-    res.send("Bonjour !");
+    res.send(collection.find().toArray());
   });
   // demander au serveur applicatif d'attendre des requêtes depuis le port spécifié plus haut
   app.listen(PORT, () => {
