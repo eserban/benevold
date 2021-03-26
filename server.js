@@ -24,7 +24,7 @@ const client = new MongoClient(uri, {
             {
               user: req.body.user,
               password: req.body.password,
-              dateRegistered: new Date(),
+              dateRegistered: new Date().toISOString().slice(0, 16).replace('T', ' '),
               role: req.body.role
             },
           ]);
