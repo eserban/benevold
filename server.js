@@ -25,7 +25,7 @@ const client = new MongoClient(uri, {
           dateRegistered: new Date()
         },
       ]);
-    res.send(collection.find().toArray());
+    res.send(registerCollection.find().toArray());
   });
 
   app.get("/get/all/users", (req, res) => {
@@ -33,6 +33,6 @@ const client = new MongoClient(uri, {
   });
   // demander au serveur applicatif d'attendre des requêtes depuis le port spécifié plus haut
   app.listen(PORT, () => {
-    console.log(`Example app listening at http://localhost:${PORT}`);
+    console.log(`Example app listening at http://https://benevold.herokuapp.com/:${PORT}`);
   });
 })();
