@@ -36,12 +36,15 @@ const client = new MongoClient(uri, {
 
   // définir le point d'entrée `GET /` qui retourne tous les utilisateurs
   app.get("/users", async (req, res) => {
-      const userId = req.query.id
-      if(userId){
+    const userId = req.query.id
+    const userName = req.query.user
+    if(userId){
         res.send(await registerCollection.find({ "_id": `${userId}` }).toArray());
-      }else{
-          res.send(await registerCollection.find().toArray());
-      }
+    }else if(userName){
+        res.send(await registerCollection.find({ "user": userName }).toArray());
+    }else{
+        res.send(await registerCollection.find().toArray());
+    }
   });
   // demander au serveur applicatif d'attendre des requêtes depuis le port spécifié plus haut
   app.listen(PORT, () => {
