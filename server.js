@@ -10,15 +10,33 @@ const client = new MongoClient(uri, {
 
 (async () => {
   await client.connect();
-  const collection = client.db("test").collection("messages");
+  const registerCollection = client.db("test").collection("connection");
 
   // instancier le serveur applicatif "express"
   const app = express();
   app.use(express.json());
 
   // définir le point d'entrée `GET /` qui répond "Bonjour !" à chaque requête reçue
-  app.get("/", (req, res) => {
+  app.post("/register", (req, res) => {
+    await collection.insertMany([
+        {
+          from: "user",
+          msg: req.body.msg,
+        },
+        {
+          from: "password",
+          msg: réponse,
+        },
+        {
+            from: "date-registration",
+            msg: new Date(),
+          },
+      ]);
     res.send(collection.find().toArray());
+  });
+
+  app.get("/get/all/users", (req, res) => {
+        res.send(registerCollection.find().toArray());
   });
   // demander au serveur applicatif d'attendre des requêtes depuis le port spécifié plus haut
   app.listen(PORT, () => {
