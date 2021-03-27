@@ -47,6 +47,9 @@ typings/
 # TypeScript cache
 *.tsbuildinfo
 
+#WebStorm
+.idea
+
 # Optional npm cache directory
 .npm
 
