@@ -1,5 +1,5 @@
 const express = require("express");
-const { userSchema } = require("modelsDB.js").userSchema;
+const { userSchema } = require("./modelsDB.js");
 const PORT = process.env.PORT || 3000;
 
 const MongoClient = require("mongodb").MongoClient;
