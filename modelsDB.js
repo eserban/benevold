@@ -7,3 +7,8 @@ function userSchema(user, password, role){
     };
 }
 
+
+
+module.exports = {
+    userSchema
+}
