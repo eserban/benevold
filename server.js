@@ -1,4 +1,5 @@
 const express = require("express");
+const userSchema = require("modelsDB.js").userSchema;
 const PORT = process.env.PORT || 3000;
 
 const MongoClient = require("mongodb").MongoClient;
@@ -20,14 +21,7 @@ const client = new MongoClient(uri, {
   app.post("/register", async (req, res) => {
       const user = await registerCollection.find({"user": req.body.user}).toArray();
       if(user.length === 0){
-        await registerCollection.insertMany([
-            {
-              user: req.body.user,
-              password: req.body.password,
-              dateRegistered: new Date().toISOString().slice(0, 16).replace('T', ' '),
-              role: req.body.role
-            },
-          ]);
+        await registerCollection.insertMany([userSchema(req.body.user, req.body.password, req.body.role)]);
         res.send({"success": "User added"});
       }else{
         res.send({"error": "registration not possible"});
