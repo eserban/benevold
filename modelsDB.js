@@ -1,14 +1,26 @@
-function userSchema(user, password, role){
+function userSchema(firstName, lastName, email, password, role){
     return {
-        "user": user,
+        "firstName": firstName,
+        "lastName": lastName,
+        "email": email,
         "password": password,
         "dateRegistered": new Date().toISOString().slice(0, 16).replace('T', ' '),
         "role": role
     };
 }
 
+function jwtSignSchema(id, firstName, lastName, role){
+    return {
+        "id": id,
+        "firstName": firstName,
+        "lastName": lastName,
+        "role": role
+    }
+}
+
 
 
 module.exports = {
-    userSchema
+    userSchema,
+    jwtSignSchema
 }
