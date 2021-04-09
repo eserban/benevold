@@ -9,12 +9,19 @@ function userSchema(firstName, lastName, email, password, role){
     };
 }
 
-function jwtSignSchema(id, firstName, lastName, role){
+function jwtSignSchema(id, firstName, lastName, email, role){
     return {
         "id": id,
         "firstName": firstName,
         "lastName": lastName,
+        "email": email,
         "role": role
+    }
+}
+
+function usersFindSchema(){
+    return {
+        "password": 0
     }
 }
 
@@ -22,5 +29,6 @@ function jwtSignSchema(id, firstName, lastName, role){
 
 module.exports = {
     userSchema,
-    jwtSignSchema
+    jwtSignSchema,
+    usersFindSchema
 }
