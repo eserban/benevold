@@ -109,7 +109,7 @@ const client = new MongoClient(uri, {
         //if body entries are OK we generate a token for the user
         let tokenSignSchema = jwtSignSchema(user[0]._id, user[0].firstName, user[0].lastName, user[0].email, user[0].role);
         
-        token = jwt.sign(tokenSignSchema, process.env.JWT_KEY || "testENCODE", {
+        token = jwt.sign(tokenSignSchema, process.env.JWT_KEY, {
             expiresIn: 86400 // expires in 24 hours
         });
       }
@@ -148,7 +148,7 @@ const client = new MongoClient(uri, {
       code            = 403; 
       errorMessage    = "Authentification Failed"
     }else{
-      tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+      tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
       if(!tokenObject){
         success         = false;
         code            = 500;
