@@ -4,8 +4,16 @@ function userSchema(firstName, lastName, email, password, role){
         "lastName": lastName,
         "email": email,
         "password": password,
-        "dateRegistered": new Date().toISOString().slice(0, 16).replace('T', ' '),
-        "role": role
+        "dateRegistered": new Date().toISOString().slice(0, 16).replace('T', ' ')
+    };
+}
+
+function userAdminSchema(name, email, password, role){
+    return {
+        "name": name,
+        "email": email,
+        "password": password,
+        "dateRegistered": new Date().toISOString().slice(0, 16).replace('T', ' ')
     };
 }
 

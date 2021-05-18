@@ -1,34 +1,12 @@
-const express = require("express");
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const adminAuth = require('./routes/auth/routes-admin.js');
-const { userSchema, jwtSignSchema, usersFindSchema } = require("./modelsDB.js");
-const PORT = process.env.PORT || 3000;
+// définir
+var express = require('express');
+var router = express.Router();
 
-const dbName = "benevold_db";
-
-const MongoClient = require("mongodb").MongoClient;
-const uri = process.env.MONGO_URI;
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-(async () => {
-  await client.connect();
-
-  // instancier le serveur applicatif "express"
-  const app = express();
-  app.use(express.json());
-
-  app.use('/api/admin', adminAuth);
-
-  // définir le point d'entrée `POST /` pour l'enregistrement d'un nouvel utilisateur
-  app.post("/register", async (req, res) => {
+// définir le point d'entrée `POST /` pour l'enregistrement d'un nouvel utilisateur
+router.post("/add", async (req, res) => {
     const password = req.body.password ?? null;
     const email = req.body.email ?? null;
-    const firstName = req.body.firstName ?? null;
-    const lastName = req.body.lastName ?? null;
+    const name = req.body.name ?? null;
     const role = req.body.role ?? "user";
 
     const emailRegex = /^\S+@\S+$/;
@@ -64,8 +42,7 @@ const client = new MongoClient(uri, {
         //If body request is OK, password hash and adding user to db
         const saltRound = 10;
         let hashedPwd = await bcrypt.hash(password,saltRound);
-        await userCollection.insertOne(userSchema(firstName, lastName, email, hashedPwd, role));
-
+        await userCollection.insertOne(userSchema(name, email, hashedPwd, role));
       }
 
       const data = {
@@ -77,7 +54,7 @@ const client = new MongoClient(uri, {
       res.status(code).send(data);
   });
 
-  app.post("/signin", async (req, res) => {
+  router.post("/signin", async (req, res) => {
     try{
       const email = req.body.email ?? null;
       const password = req.body.password ?? null;
@@ -130,11 +107,8 @@ const client = new MongoClient(uri, {
     }
 
   });
-
-  
-
   // définir le point d'entrée `GET /` qui retourne tous les utilisateurs ou l'utilisateur en fonction de ce qui est envoyé
-  app.get("/users", async (req, res) => {
+  router.get("/users", async (req, res) => {
     const token = req.header('access-token') ?? null;
     const userId = req.query.id ?? null;
 
@@ -181,9 +155,3 @@ const client = new MongoClient(uri, {
     res.status(code).send(data);
 
   });
-
-  // demander au serveur applicatif d'attendre des requêtes depuis le port spécifié plus haut
-  app.listen(PORT, () => {
-    console.log(`Example app listening at http://https://benevold.herokuapp.com/:${PORT}`);
-  });
-})();
