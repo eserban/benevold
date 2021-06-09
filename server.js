@@ -1,6 +1,5 @@
 const express = require("express");
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const adminAuth = require('./routes/auth/routes-admin.js');
 const { userSchema, jwtSignSchema, usersFindSchema } = require("./modelsDB.js");
 const PORT = process.env.PORT || 3000;
@@ -8,20 +7,26 @@ const PORT = process.env.PORT || 3000;
 const dbName = "benevold_db";
 
 const MongoClient = require("mongodb").MongoClient;
-const uri = process.env.MONGO_URI;
+const uri = process.env.MONGO_URI || "mongodb+srv://admin-benevold:MaqLBQjdNLmm6b4R@cluster0.qf07i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
+
+
+
+
 (async () => {
+  const app = express();
+  app.use(express.json());
+  app.use(express.urlencoded())
+
+  app.use('/api/admin', adminAuth); 
   await client.connect();
 
   // instancier le serveur applicatif "express"
-  const app = express();
-  app.use(express.json());
-
-  app.use('/api/admin', adminAuth);
+  
 
   // définir le point d'entrée `POST /` pour l'enregistrement d'un nouvel utilisateur
   app.post("/register", async (req, res) => {
@@ -112,7 +117,7 @@ const client = new MongoClient(uri, {
         //if body entries are OK we generate a token for the user
         let tokenSignSchema = jwtSignSchema(user[0]._id, user[0].firstName, user[0].lastName, user[0].email, user[0].role);
         
-        token = jwt.sign(tokenSignSchema, process.env.JWT_KEY, {
+        token = jwt.sign(tokenSignSchema, process.env.JWT_KEY || "testENCODE", {
             expiresIn: 86400 // expires in 24 hours
         });
       }

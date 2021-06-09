@@ -4,13 +4,13 @@ function userSchema(firstName, lastName, email, password, role){
         "lastName": lastName,
         "email": email,
         "password": password,
-        "dateRegistered": new Date().toISOString().slice(0, 16).replace('T', ' ')
+        "dateRegistered": new Date().toISOString().slice(0, 16).replace('T', ' '),
+        "role": role
     };
-}
+} 
 
-function userAdminSchema(name, email, password, role){
+function userAdminSchema(email, password, role){
     return {
-        "name": name,
         "email": email,
         "password": password,
         "dateRegistered": new Date().toISOString().slice(0, 16).replace('T', ' ')
@@ -27,6 +27,13 @@ function jwtSignSchema(id, firstName, lastName, email, role){
     }
 }
 
+function jwtAdminSignSchema(id, email){
+    return {
+        "id": id,
+        "email": email
+    }
+}
+
 function usersFindSchema(){
     return {
         "password": 0
@@ -37,6 +44,8 @@ function usersFindSchema(){
 
 module.exports = {
     userSchema,
+    userAdminSchema,
     jwtSignSchema,
+    jwtAdminSignSchema,
     usersFindSchema
 }

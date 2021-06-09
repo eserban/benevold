@@ -1,29 +1,38 @@
 // définir
 var express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { userAdminSchema, jwtAdminSignSchema, usersFindSchema } = require("../../modelsDB.js");
 var router = express.Router();
+let dbName = "benevold_db"
+
+const MongoClient = require("mongodb").MongoClient;
+const uri = process.env.MONGO_URI || "mongodb+srv://admin-benevold:MaqLBQjdNLmm6b4R@cluster0.qf07i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // définir le point d'entrée `POST /` pour l'enregistrement d'un nouvel utilisateur
 router.post("/add", async (req, res) => {
+    await client.connect();
     const password = req.body.password ?? null;
     const email = req.body.email ?? null;
-    const name = req.body.name ?? null;
-    const role = req.body.role ?? "user";
 
     const emailRegex = /^\S+@\S+$/;
 
     let success         = true;
     let code            = 200;
     let errorMessage    = null;
-    let token           = null;
 
-    const userCollection    = await client.db(dbName).collection("users");
+    const userCollection    = await client.db(dbName).collection("admin_users");
     const user              = await userCollection.find({"email": email}).toArray();
 
-    if(!firstName || !lastName || !password || !emailRegex.test(email))
+    if(!password || !emailRegex.test(email))
       {
           success         = false;
           code            = 400;
-          errorMessage    = "Un Nom, un Prenom, une adresse mail valide ainsi qu'un mot de passe sont requis."
+          errorMessage    = "Une adresse mail valide ainsi qu'un mot de passe sont requis."
       }else if(password.length < 4)
       {
           success         = false;
@@ -42,7 +51,7 @@ router.post("/add", async (req, res) => {
         //If body request is OK, password hash and adding user to db
         const saltRound = 10;
         let hashedPwd = await bcrypt.hash(password,saltRound);
-        await userCollection.insertOne(userSchema(name, email, hashedPwd, role));
+        await userCollection.insertOne(userAdminSchema(email, hashedPwd));
       }
 
       const data = {
@@ -55,6 +64,7 @@ router.post("/add", async (req, res) => {
   });
 
   router.post("/signin", async (req, res) => {
+    await client.connect();
     try{
       const email = req.body.email ?? null;
       const password = req.body.password ?? null;
@@ -87,9 +97,9 @@ router.post("/add", async (req, res) => {
 
       if(success){
         //if body entries are OK we generate a token for the user
-        let tokenSignSchema = jwtSignSchema(user[0]._id, user[0].firstName, user[0].lastName, user[0].email, user[0].role);
+        let tokenSignSchema = jwtAdminSignSchema(user[0]._id, user[0].email);
         
-        token = jwt.sign(tokenSignSchema, process.env.JWT_KEY, {
+        token = jwt.sign(tokenSignSchema, process.env.JWT_KEY || "testENCODE", {
             expiresIn: 86400 // expires in 24 hours
         });
       }
@@ -109,6 +119,7 @@ router.post("/add", async (req, res) => {
   });
   // définir le point d'entrée `GET /` qui retourne tous les utilisateurs ou l'utilisateur en fonction de ce qui est envoyé
   router.get("/users", async (req, res) => {
+    await client.connect();
     const token = req.header('access-token') ?? null;
     const userId = req.query.id ?? null;
 
@@ -125,7 +136,7 @@ router.post("/add", async (req, res) => {
       code            = 403; 
       errorMessage    = "Authentification Failed"
     }else{
-      tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
+      tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
       if(!tokenObject){
         success         = false;
         code            = 500;
@@ -135,7 +146,7 @@ router.post("/add", async (req, res) => {
 
     if(success){
       userEmail = tokenObject.email;
-      const userCollection    = await client.db(dbName).collection("users");
+      const userCollection    = await client.db(dbName).collection("admin_users");
       const projection = usersFindSchema();
       if(userId){
         response              = await userCollection.find({ "_id": userId }).project(projection).toArray();
@@ -155,3 +166,5 @@ router.post("/add", async (req, res) => {
     res.status(code).send(data);
 
   });
+
+  module.exports = router;
