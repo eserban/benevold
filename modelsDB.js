@@ -40,6 +40,26 @@ function usersFindSchema(){
     }
 }
 
+function jelloProjectsSchema(projectId, name, team, tasks) {
+    return {
+        "project_id": projectId,
+        "name": name,
+        "team": team,
+        "tasks": tasks
+    }
+}
+
+function jelloTasksSchema(taskId, name, team, status, description, comments) {
+    return {
+        "task_id": taskId,
+        "name": name,
+        "status": status,
+        "team": team,
+        "description": description,
+        "comments": comments
+    }
+}
+
 
 
 module.exports = {
@@ -47,5 +67,7 @@ module.exports = {
     userAdminSchema,
     jwtSignSchema,
     jwtAdminSignSchema,
-    usersFindSchema
+    usersFindSchema,
+    jelloProjectsSchema,
+    jelloTasksSchema
 }
