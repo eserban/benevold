@@ -6,7 +6,7 @@ let router = express.Router();
 let dbName = "benevold_db"
 
 const MongoClient = require("mongodb").MongoClient;
-const uri = process.env.MONGO_URI || "mongodb+srv://admin-benevold:MaqLBQjdNLmm6b4R@cluster0.qf07i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -32,7 +32,7 @@ const client = new MongoClient(uri, {
             code = 403;
             errorMessage = "Authentification Failed"
         } else {
-            tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
                 success = false;
                 code = 500;
@@ -75,7 +75,7 @@ const client = new MongoClient(uri, {
             code = 403;
             errorMessage = "Authentification Failed"
         } else {
-            tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
                 success = false;
                 code = 500;
@@ -145,7 +145,7 @@ const client = new MongoClient(uri, {
                 //if body entries are OK we generate a token for the user
                 let tokenSignSchema = jwtAdminSignSchema(user[0]._id, user[0].username);
 
-                token = jwt.sign(tokenSignSchema, process.env.JWT_KEY || "testENCODE", {
+                token = jwt.sign(tokenSignSchema, process.env.JWT_KEY, {
                     expiresIn: 86400
                 });
             }
@@ -194,7 +194,7 @@ const client = new MongoClient(uri, {
             code = 400;
             errorMessage = "Ce project existe deja";
         } else {
-            tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
                 success = false;
                 code = 500;
@@ -243,7 +243,7 @@ const client = new MongoClient(uri, {
             code = 400;
             errorMessage = "Ce project existe pas";
         } else {
-            tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
                 success = false;
                 code = 500;
@@ -302,7 +302,7 @@ const client = new MongoClient(uri, {
             code = 400;
             errorMessage = "Ce project existe pas";
         } else {
-            tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
                 success = false;
                 code = 500;
@@ -381,7 +381,7 @@ const client = new MongoClient(uri, {
             code = 400;
             errorMessage = "Cet utilisateur n'existe pas";
         } else {
-            tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
                 success = false;
                 code = 500;
@@ -433,7 +433,7 @@ const client = new MongoClient(uri, {
             code = 400;
             errorMessage = "Ce project n'existe pas";
         } else {
-            tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
                 success = false;
                 code = 500;
@@ -484,7 +484,7 @@ const client = new MongoClient(uri, {
             code = 400;
             errorMessage = "Cette tache n'existe pas";
         } else {
-            tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
                 success = false;
                 code = 500;
@@ -546,7 +546,7 @@ const client = new MongoClient(uri, {
             code = 400;
             errorMessage = "Cette tache existe deja";
         } else {
-            tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
                 success = false;
                 code = 500;
@@ -604,7 +604,7 @@ const client = new MongoClient(uri, {
             code = 400;
             errorMessage = "Cette tache n'existe pas";
         } else {
-            tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
                 success = false;
                 code = 500;
@@ -656,7 +656,7 @@ const client = new MongoClient(uri, {
             code = 400;
             errorMessage = "Cette tache n'existe pas";
         } else {
-            tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
                 success = false;
                 code = 500;
@@ -719,7 +719,7 @@ const client = new MongoClient(uri, {
             code = 400;
             errorMessage = "Cette tache n'existe pas";
         } else {
-            tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
                 success = false;
                 code = 500;
@@ -792,7 +792,7 @@ const client = new MongoClient(uri, {
             code = 400;
             errorMessage = "Cet utilisateur n'existe pas";
         } else {
-            tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
                 success = false;
                 code = 500;
@@ -849,7 +849,7 @@ const client = new MongoClient(uri, {
             code = 400;
             errorMessage = "Ce project n'existe pas";
         } else {
-            tokenObject = jwt.verify(token, process.env.JWT_KEY || "testENCODE") ?? null;
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
                 success = false;
                 code = 500;
