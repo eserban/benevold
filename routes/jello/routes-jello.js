@@ -1,7 +1,7 @@
 var express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { userAdminSchema, jwtAdminSignSchema, usersFindSchema, jelloProjectsSchema, jelloTasksSchema, jelloTasksSchema } = require("../../modelsDB.js");
+const { userAdminSchema, jwtAdminSignSchema, usersFindSchema, jelloProjectsSchema, jelloTasksSchema } = require("../../modelsDB.js");
 let router = express.Router();
 let dbName = "benevold_db"
 
