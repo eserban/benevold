@@ -1,6 +1,7 @@
 const express = require("express");
 const adminAuth = require('./routes/auth/routes-admin.js');
 const jelloRoutes = require('./routes/jello/routes-jello.js');
+const flutterRoutes = require('./routes/flutter/routes-flutter.js');
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -8,6 +9,7 @@ app.use(express.json());
 
 app.use('/api/admin', adminAuth);
 app.use('/jello', jelloRoutes);
+app.use('/flutter', flutterRoutes);
 
 
 // demander au serveur applicatif d'attendre des requêtes depuis le port spécifié plus haut
