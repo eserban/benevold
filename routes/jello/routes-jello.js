@@ -108,7 +108,7 @@ const client = new MongoClient(uri, {
 
 
 
-    router.get("/auth", async (req, res) => {
+    router.post("/auth", async (req, res) => {
         try {
             const username = req.body.email ?? null;
             const password = req.body.password ?? null;
