@@ -817,7 +817,7 @@ const client = new MongoClient(uri, {
         res.status(code).send(data);
     });
 
-    router.put('/task/project/name', async (req, res) => {
+    router.put('/project/name', async (req, res) => {
         const token = req.header('access-token') ?? null;
 
         let tokenObject = null;
