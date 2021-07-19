@@ -168,7 +168,6 @@ const client = new MongoClient(uri, {
         const token = req.header('access-token') ?? null;
 
         let tokenObject = null;
-        let projectId = req.body.project_id;
         let name = req.body.name;
         let team = req.body.team;
 
@@ -178,7 +177,7 @@ const client = new MongoClient(uri, {
         let response = [];
 
         const projectCollection = await client.db(dbName).collection("jello_projects");
-        const project = await projectCollection.find({ "project_id": projectId }).toArray();
+        const project = await projectCollection.find({ "name": name }).toArray();
 
 
         if (!token) {
@@ -203,7 +202,7 @@ const client = new MongoClient(uri, {
         }
 
         if (success) {
-            await userCollection.insertOne(jelloProjectsSchema(projectId, name, team, []));
+            await userCollection.insertOne(jelloProjectsSchema(name, team, []));
         }
 
         const data = {
@@ -228,7 +227,7 @@ const client = new MongoClient(uri, {
         let response = [];
 
         const projectCollection = await client.db(dbName).collection("jello_projects");
-        const project = await projectCollection.find({ "project_id": projectId }).toArray();
+        const project = await projectCollection.find({ "_id": projectId }).toArray();
 
         if (!token) {
             success = false;
@@ -283,7 +282,7 @@ const client = new MongoClient(uri, {
         let response = [];
 
         const projectCollection = await client.db(dbName).collection("jello_projects");
-        const project = await projectCollection.find({ "project_id": projectId }).toArray();
+        const project = await projectCollection.find({ "_id": projectId }).toArray();
 
         if (!token) {
             success = false;
@@ -319,7 +318,7 @@ const client = new MongoClient(uri, {
             });
             if (newTeam.length == 0) {
                 try {
-                    await client.db(dbName).collection("jello_projects").deleteOne({ "project_id": projectId })
+                    await client.db(dbName).collection("jello_projects").deleteOne({ "_id": projectId })
                 } catch (err) {
                     success = false;
                     code = 400;
@@ -327,7 +326,7 @@ const client = new MongoClient(uri, {
                 }
             } else {
                 try {
-                    await client.db(dbName).collection("jello_projects").updateOne({ "project_id": projectId }, { $set: { "team": newTeam } })
+                    await client.db(dbName).collection("jello_projects").updateOne({ "_id": projectId }, { $set: { "team": newTeam } })
                 } catch (err) {
                     success = false;
                     code = 400;
@@ -356,8 +355,8 @@ const client = new MongoClient(uri, {
 
         const projectCollection = await client.db(dbName).collection("jello_projects");
         const userCollection = await client.db(dbName).collection("jello_users");
-        const project = await projectCollection.find({ "project_id": projectId }).toArray();
-        const user = await projectCollection.find({ "user_id": userId }).toArray();
+        const project = await projectCollection.find({ "_id": projectId }).toArray();
+        const user = await userCollection.find({ "_id": userId }).toArray();
 
 
         if (!token) {
@@ -393,7 +392,7 @@ const client = new MongoClient(uri, {
             team = project[0].team;
             team.append(user[0]);
             try {
-                await client.db(dbName).collection("jello_projects").updateOne({ "project_id": projectId }, { $set: { "team": team } })
+                await client.db(dbName).collection("jello_projects").updateOne({ "_id": projectId }, { $set: { "team": team } })
             } catch (err) {
                 success = false;
                 code = 400;
@@ -422,7 +421,7 @@ const client = new MongoClient(uri, {
         let response = [];
 
         const projectCollection = await client.db(dbName).collection("jello_projects");
-        const project = await projectCollection.find({ "project_id": projectId }).toArray();
+        const project = await projectCollection.find({ "_id": projectId }).toArray();
 
         if (!token) {
             success = false;
@@ -469,7 +468,7 @@ const client = new MongoClient(uri, {
         let response = [];
 
         const taskCollection = await client.db(dbName).collection("jello_tasks");
-        const task = await taskCollection.find({ "task_id": taskId }).toArray();
+        const task = await taskCollection.find({ "_id": taskId }).toArray();
 
         if (!token) {
             success = false;
@@ -525,8 +524,8 @@ const client = new MongoClient(uri, {
 
         const tasksCollection = await client.db(dbName).collection("jello_tasks");
         const projectCollection = await client.db(dbName).collection("jello_projects");
-        const task = await projectCollection.find({ "task_id": taskId }).toArray();
-        const project = await projectCollection.find({ "project_id": projectId }).toArray();
+        const task = await tasksCollection.find({ "_id": taskId }).toArray();
+        const project = await projectCollection.find({ "_id": projectId }).toArray();
 
 
         if (!token) {
@@ -565,7 +564,7 @@ const client = new MongoClient(uri, {
             }
             tasks.append(taskToProject);
 
-            await projectCollection.updateOne({ "project_id": projectId }, { $set: { "tasks": tasks } })
+            await projectCollection.updateOne({ "_id": projectId }, { $set: { "tasks": tasks } })
         }
 
         const data = {
@@ -589,7 +588,7 @@ const client = new MongoClient(uri, {
         let response = [];
 
         const tasksCollection = await client.db(dbName).collection("jello_tasks");
-        const task = await projectCollection.find({ "task_id": taskId }).toArray();
+        const task = await tasksCollection.find({ "_id": taskId }).toArray();
 
         if (!token) {
             success = false;
@@ -641,7 +640,7 @@ const client = new MongoClient(uri, {
         let response = [];
 
         const tasksCollection = await client.db(dbName).collection("jello_tasks");
-        const task = await projectCollection.find({ "task_id": taskId }).toArray();
+        const task = await tasksCollection.find({ "_id": taskId }).toArray();
 
         if (!token) {
             success = false;
@@ -675,7 +674,7 @@ const client = new MongoClient(uri, {
                 }
             )
 
-            await tasksCollection.updateOne({ "task_id": taskId }, { $set: { "comments": comms } });
+            await tasksCollection.updateOne({ "_id": taskId }, { $set: { "comments": comms } });
         }
 
         const data = {
@@ -700,7 +699,7 @@ const client = new MongoClient(uri, {
         let response = [];
 
         const tasksCollection = await client.db(dbName).collection("jello_tasks");
-        const task = await projectCollection.find({ "task_id": taskId }).toArray();
+        const task = await tasksCollection.find({ "_id": taskId }).toArray();
 
         if (!token) {
             success = false;
@@ -738,9 +737,9 @@ const client = new MongoClient(uri, {
             });
 
             if (newTeam.length == 0) {
-                await taskCollection.deleteOne({ "task_id": taskId });
+                await taskCollection.deleteOne({ "_id": taskId });
             } else {
-                await taskCollection.updateOne({ "task_id": taskId }, { $set: { "team": newTeam } });
+                await taskCollection.updateOne({ "_id": taskId }, { $set: { "team": newTeam } });
             }
         }
 
@@ -768,8 +767,8 @@ const client = new MongoClient(uri, {
 
         const tasksCollection = await client.db(dbName).collection("jello_tasks");
         const userCollection = await client.db(dbName).collection("jello_users");
-        const task = await projectCollection.find({ "task_id": taskId }).toArray();
-        const user = await projectCollection.find({ "user_id": userId }).toArray();
+        const task = await tasksCollection.find({ "_id": taskId }).toArray();
+        const user = await userCollection.find({ "_id": userId }).toArray();
 
         if (!token) {
             success = false;
@@ -805,7 +804,7 @@ const client = new MongoClient(uri, {
 
             team.append(user[0]);
 
-            await taskCollection.updateOne({ "task_id": taskId }, { $set: { "team": team } });
+            await taskCollection.updateOne({ "_id": taskId }, { $set: { "team": team } });
         }
 
         const data = {
@@ -830,7 +829,7 @@ const client = new MongoClient(uri, {
         let response = [];
 
         const projectCollection = await client.db(dbName).collection("jello_projects");
-        const project = await projectCollection.find({ "project_id": projectId }).toArray();
+        const project = await projectCollection.find({ "_id": projectId }).toArray();
 
         if (!token) {
             success = false;
@@ -858,7 +857,7 @@ const client = new MongoClient(uri, {
         }
 
         if (success) {
-            await projectCollection.updateOne({ "project_id": projectId }, { $set: { "name": newName } });
+            await projectCollection.updateOne({ "_id": projectId }, { $set: { "name": newName } });
         }
 
         const data = {

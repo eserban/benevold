@@ -40,9 +40,8 @@ function usersFindSchema(){
     }
 }
 
-function jelloProjectsSchema(projectId, name, team, tasks) {
+function jelloProjectsSchema(name, team, tasks) {
     return {
-        "project_id": projectId,
         "name": name,
         "team": team,
         "tasks": tasks
