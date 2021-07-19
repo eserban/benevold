@@ -203,7 +203,7 @@ const client = new MongoClient(uri, {
         }
 
         if (success) {
-            await userCollection.insertOne(jelloProjectsSchema(name, team, []));
+            await projectCollection.insertOne(jelloProjectsSchema(name, team, []));
         }
 
         const data = {
