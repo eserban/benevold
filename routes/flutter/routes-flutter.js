@@ -21,7 +21,7 @@ const client = new MongoClient(uri, {
        res.send("This is the flutter region"); 
     });
 
-    router.get('/flutter/profiles', (req, res) => {
+    router.get('/flutter/profiles', async (req, res) => {
         const token = req.header('access-token') ?? null;
 
         let tokenObject = null;
