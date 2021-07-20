@@ -30,7 +30,7 @@ const client = new MongoClient(uri, {
 
 
     //ROUTE GET PROFILES
-    router.get('/flutter/profiles', async (req, res) => {
+    router.get('/profiles', async (req, res) => {
         const token = req.header('access-token') ?? null;
 
         let tokenObject = null;
@@ -75,7 +75,7 @@ const client = new MongoClient(uri, {
     });
 
     //ROUTE GET CATEGORIES/CATEGORY
-    router.get('/flutter/categories', async (req, res) => {
+    router.get('/categories', async (req, res) => {
         const token = req.header('access-token') ?? null;
 
         let tokenObject = null;
@@ -120,7 +120,7 @@ const client = new MongoClient(uri, {
     });
 
     //ROUTE GET ANNONCE/ANNONES
-    router.get('/flutter/annonces', async (req, res) => {
+    router.get('/annonces', async (req, res) => {
         const token = req.header('access-token') ?? null;
 
         let tokenObject = null;
@@ -164,7 +164,7 @@ const client = new MongoClient(uri, {
         res.status(code).send(data);
     });
 
-    router.delete('/flutter/annonce', async (req, res) => {
+    router.delete('/annonce', async (req, res) => {
         const token = req.header('access-token') ?? null;
 
         let annId = req.body.annonce_id ?? null;
@@ -212,7 +212,7 @@ const client = new MongoClient(uri, {
         res.status(code).send(data);
     });
 
-    router.delete('/flutter/category', async (req, res) => {
+    router.delete('/category', async (req, res) => {
         const token = req.header('access-token') ?? null;
 
         let categoryId = req.body.category_id ?? null;
@@ -260,7 +260,7 @@ const client = new MongoClient(uri, {
         res.status(code).send(data);
     });
 
-    router.delete('/flutter/profile', async (req, res) => {
+    router.delete('/profile', async (req, res) => {
         const token = req.header('access-token') ?? null;
 
         let profileId = req.body.profile_id ?? null;
