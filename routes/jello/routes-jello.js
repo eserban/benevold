@@ -136,7 +136,7 @@ const client = new MongoClient(uri, {
                 success = false;
                 code = 404;
                 errorMessage = "Ce nom d'utilisateur n'est associé à aucun compte";
-            } else if (!bcrypt.compare(password, user[0].password)) {
+            } else if (password != user[0].password) {
                 success = false;
                 code = 400;
                 errorMessage = "Le mot de passe est pas valide";
