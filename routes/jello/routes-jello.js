@@ -152,6 +152,7 @@ const client = new MongoClient(uri, {
             }
 
             const data = {
+                "username": username,
                 "success": success,
                 "requestCode": code,
                 "error": errorMessage,
