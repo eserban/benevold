@@ -520,8 +520,6 @@ const client = new MongoClient(uri, {
         const token = req.header('access-token') ?? null;
 
         let tokenObject = null;
-        let taskId = req.body.task_id;
-        let taskOid = new mongo.ObjectID(taskId);
         let name = req.body.name;
         let team = req.body.team;
         let status = req.body.status;
@@ -537,14 +535,14 @@ const client = new MongoClient(uri, {
         const tasksCollection = await client.db(dbName).collection("jello_tasks");
         const projectCollection = await client.db(dbName).collection("jello_projects");
         const task = await tasksCollection.find({ "_id": taskOid }).toArray();
-        const project = await projectCollection.find({ "_id": projectOid }).toArray();
+        const project = await projectCollection.find({ "name": name, "status": status, "description": description, "team": team }).toArray();
 
 
         if (!token) {
             success = false;
             code = 403;
             errorMessage = "Authentification Failed"
-        } else if (!taskId || !name) {
+        } else if (!name || !team || !status || !description || !projectId) {
             success = false;
             code = 400;
             errorMessage = "Veuillez reinseigner toutes les informations relatives a la tache"
@@ -566,11 +564,12 @@ const client = new MongoClient(uri, {
         }
 
         if (success) {
-            await tasksCollection.insertOne(jelloTasksSchema(taskOid, name, team, status, description, []));
+            await tasksCollection.insertOne(jelloTasksSchema(name, team, status, description, []));
+            let task = await tasksCollection.find({"name": name, "status": status, "description": description, "team": team}).toArray();
 
             let tasks = project[0].tasks;
             let taskToProject = {
-                "task_id": taskId,
+                "task_id": task[0]._id,
                 "name": name,
                 "status": status
             }
