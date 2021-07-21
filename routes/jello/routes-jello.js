@@ -81,7 +81,7 @@ const client = new MongoClient(uri, {
                 success = false;
                 code = 500;
                 errorMessage = "Your connection token is no more valid";
-            }
+0            }
         }
 
         if (success) {
@@ -319,7 +319,7 @@ const client = new MongoClient(uri, {
             projectTeam = project[0].team;
             projectTeam.forEach(user => {
                 if (user._id != userOid) {
-                    newTeam.append(user)
+                    newTeam.push(user)
                 }
             });
             if (newTeam.length == 0) {
@@ -398,7 +398,7 @@ const client = new MongoClient(uri, {
 
         if (success) {
             team = project[0].team;
-            team.append(user[0]);
+            team.push(user[0]);
             try {
                 await client.db(dbName).collection("jello_projects").updateOne({ "_id": projectOid }, { $set: { "team": team } })
             } catch (err) {
@@ -574,7 +574,7 @@ const client = new MongoClient(uri, {
                 "name": name,
                 "status": status
             }
-            tasks.append(taskToProject);
+            tasks.push(taskToProject);
 
             await projectCollection.updateOne({ "_id": projectOid }, { $set: { "tasks": tasks } })
         }
@@ -680,7 +680,7 @@ const client = new MongoClient(uri, {
         if (success) {
             let comms = task[0].comments;
 
-            comms.append(
+            comms.push(
                 {
                     "date_time": dateTime,
                     "message": message,
@@ -748,7 +748,7 @@ const client = new MongoClient(uri, {
 
             team.foreach(user => {
                 if (user._id != userOid) {
-                    newTeam.append(user);
+                    newTeam.push(user);
                 }
             });
 
@@ -820,7 +820,7 @@ const client = new MongoClient(uri, {
         if (success) {
             let team = task[0].team;
 
-            team.append(user[0]);
+            team.push(user[0]);
 
             await taskCollection.updateOne({ "_id": taskOid }, { $set: { "team": team } });
         }
