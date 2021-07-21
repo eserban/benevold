@@ -215,7 +215,7 @@ const client = new MongoClient(uri, {
         res.status(code).send(data);
     });
 
-    router.get('/project', async (req, res) => {
+    router.post('/projectInfo', async (req, res) => {
         const token = req.header('access-token') ?? null;
 
         let tokenObject = null;
@@ -416,7 +416,7 @@ const client = new MongoClient(uri, {
 
     });
 
-    router.get('/tasks', async (req, res) => {
+    router.post('/tasks', async (req, res) => {
         const token = req.header('access-token') ?? null;
 
         let tokenObject = null;
@@ -463,7 +463,7 @@ const client = new MongoClient(uri, {
         res.status(code).send(data);
     });
 
-    router.get('/task', async (req, res) => {
+    router.post('/taskInfo', async (req, res) => {
         const token = req.header('access-token') ?? null;
 
         let tokenObject = null;
@@ -587,7 +587,7 @@ const client = new MongoClient(uri, {
         res.status(code).send(data);
     });
 
-    router.get('/task/activity', async (req, res) => {
+    router.post('/task/activityInfo', async (req, res) => {
         const token = req.header('access-token') ?? null;
 
         let tokenObject = null;
