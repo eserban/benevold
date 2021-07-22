@@ -323,7 +323,7 @@ const client = new MongoClient(uri, {
         let errorMessage = null;
         let response = [];
 
-        const profilesCollection = await client.db(dbName).collection("flutter_profiles");
+        const profilesCollection = await client.db(dbName).collection("users");
         let profile = await profilesCollection.find({"_id": profileOid}).toArray();
 
         if (!token) {
