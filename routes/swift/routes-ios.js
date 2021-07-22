@@ -28,13 +28,15 @@ const client = new MongoClient(uri, {
         let id = req.query.id ?? null;
         let userOid = new mongo.ObjectID(id);
 
+        const projection = usersFindSchema();
+
         let success         = true;
         let code            = 200;
         let errorMessage    = null;
         let response = [];
 
         const usersCollection    = await client.db(dbName).collection("users");
-        const user              = await usersCollection.find({"_id": userOid}).toArray();
+        const user              = await usersCollection.find({"_id": userOid}).project(projection).toArray();
 
         // if (!token) {
         //     success = false;
