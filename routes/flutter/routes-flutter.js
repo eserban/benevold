@@ -101,7 +101,7 @@ const client = new MongoClient(uri, {
         }
 
         if (success) {
-            const categoriesCollection = await client.db(dbName).collection("flutter_categories");
+            const categoriesCollection = await client.db(dbName).collection("categories");
             if(categoryId) {
                 let categoryOid = new mongo.ObjectID(categoryId);
                 response = await categoriesCollection.find({"_id": categoryOid}).toArray();
