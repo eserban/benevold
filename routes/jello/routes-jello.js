@@ -657,11 +657,11 @@ const client = new MongoClient(uri, {
         const token = req.header('access-token') ?? null;
 
         let tokenObject = null;
-        let taskId = req.body.task_id;
+        let taskId = req.body.task_id ?? null;
         let taskOid = new mongo.ObjectID(taskId);
-        let dateTime = req.body.date_time;
-        let message = req.body.message;
-        let short = req.body.short;
+        let dateTime = req.body.date_time ?? null;
+        let message = req.body.message ??  null;
+        let short = req.body.short ?? null;
 
         let success = true;
         let code = 200;
