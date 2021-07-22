@@ -780,6 +780,7 @@ const client = new MongoClient(uri, {
                         newTasks.push(projectTasks[i]);
                     }
                 }
+                console.log(taskOid);
                 console.log(newTasks);
 
                 await projectCollection.updateOne({ "_id": projectOid}, {$set: {"tasks": newTasks}});
