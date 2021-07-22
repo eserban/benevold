@@ -961,7 +961,7 @@ const client = new MongoClient(uri, {
         }
 
         if (success) {
-            await projectCollection.updateOne({ "_id": projectOid }, { $set: { "status": newStatus } });
+            await tasksCollection.updateOne({ "_id": taskOid }, { $set: { "status": newStatus } });
 
             const projectCollection = await client.db(dbName).collection("jello_projects");
             let projectOid = new mongo.ObjectID(task[0].project_id);
