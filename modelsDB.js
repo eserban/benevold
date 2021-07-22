@@ -58,6 +58,12 @@ function jelloTasksSchema(name, team, status, description, comments) {
     }
 }
 
+function categorieSchema(title) {
+    return {
+        "title": title
+    }
+}
+
 
 
 module.exports = {
@@ -67,5 +73,6 @@ module.exports = {
     jwtAdminSignSchema,
     usersFindSchema,
     jelloProjectsSchema,
-    jelloTasksSchema
+    jelloTasksSchema,
+    categorieSchema
 }

@@ -768,9 +768,9 @@ const client = new MongoClient(uri, {
             }
 
             if (newTeam.length == 0) {
-                await taskCollection.deleteOne({ "_id": taskOid });
+                await tasksCollection.deleteOne({ "_id": taskOid });
             } else {
-                await taskCollection.updateOne({ "_id": taskOid }, { $set: { "team": newTeam } });
+                await tasksCollection.updateOne({ "_id": taskOid }, { $set: { "team": newTeam } });
             }
         }
 

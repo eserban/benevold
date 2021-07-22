@@ -1,7 +1,7 @@
 var express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { userAdminSchema, jwtAdminSignSchema, usersFindSchema, jelloProjectsSchema, jelloTasksSchema } = require("../../modelsDB.js");
+const { userAdminSchema, jwtAdminSignSchema, usersFindSchema, categorySchema } = require("../../modelsDB.js");
 const countRoutes = require('./routes-count.js');
 let router = express.Router();
 let dbName = "benevold_db"
@@ -107,6 +107,58 @@ const client = new MongoClient(uri, {
                 response = await categoriesCollection.find({"_id": categoryOid}).toArray();
             }
             response = await categoriesCollection.find().toArray();
+        }
+
+        const data = {
+            "success": success,
+            "requestCode": code,
+            "error": errorMessage,
+            "response": response
+        };
+
+        res.status(code).send(data);
+    });
+
+    //ROUTE POST CATEGORY
+    router.post('/category', async (req, res) => {
+        const token = req.header('access-token') ?? null;
+
+        let tokenObject = null;
+        let title = req.body.title ?? null;
+
+
+        let success = true;
+        let code = 200;
+        let errorMessage = null;
+        let response = [];
+
+        if (!token) {
+            success = false;
+            code = 403;
+            errorMessage = "Authentification Failed"
+        } else if (!title) {
+            success = false;
+            code = 400;
+            errorMessage = "Veuillez reinseigner toutes les informations pour une catégorie"
+        } else {
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
+            if (!tokenObject) {
+                success = false;
+                code = 500;
+                errorMessage = "Your connection token is no more valid";
+            }
+        }
+
+        if (success) {
+            const categoriesCollection = await client.db(dbName).collection("categories");
+            let category = categorySchema(title);
+            try{
+                await categoriesCollection.insertOne(category);
+            }catch(err) {
+                success = false;
+                code = 500;
+                errorMessage = err.message;
+            }
         }
 
         const data = {
