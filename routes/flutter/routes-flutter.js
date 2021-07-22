@@ -328,15 +328,15 @@ const client = new MongoClient(uri, {
 
         if (!token) {
             success = false;
-            code = 403;
+            code = 400;
             errorMessage = "Authentification Failed";
         }else if (!profileId) {
             success = false;
-            code = 403;
+            code = 401;
             errorMessage = "Veuillez entrer l'id de l'annonce a effacer";
         } else if (profile.length == 0) {
             success = false;
-            code = 403;
+            code = 402;
             errorMessage = "Cette annonce n'a pas été trouvée";
         } else {
             tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
