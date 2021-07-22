@@ -370,8 +370,6 @@ const client = new MongoClient(uri, {
             const userCollection    = await client.db(dbName).collection("flutter_admin_users");
             const user              = await userCollection.find({"email": email}).limit(1).toArray();
 
-            const match = bcrypt.compare(password, user[0].password);
-
             if(!email || !password)
             {
                 success         = false;
@@ -382,7 +380,7 @@ const client = new MongoClient(uri, {
                 success         = false;
                 code            = 404;
                 errorMessage    = "Cet email n'est associé à aucun compte";
-            }else if (!match){
+            }else if (!bcrypt.compare(password, user[0].password)){
                 success           = false;
                 code              = 400;
                 errorMessage      = "Le mot de passe est pas valide";
