@@ -776,7 +776,7 @@ const client = new MongoClient(uri, {
                 let newTasks = [];
 
                 for(let j = 0; j < projectTasks.length; j++) {
-                    if(!projectTasks[j].task_id != taskOid) {
+                    if(projectTasks[j].task_id != taskOid) {
                         newTasks.push(projectTasks[j]);
                     }
                 }
