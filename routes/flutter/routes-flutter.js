@@ -382,13 +382,13 @@ const client = new MongoClient(uri, {
         }else if(password.length < 4)
         {
             success         = false;
-            code            = 400;
+            code            = 401;
             errorMessage    = "Le mot de passe doit contenir au moins 4 catactères."
             
         }else if (user.length > 0)
         {
             success         = false;
-            code            = 400;
+            code            = 402;
             errorMessage    = "Cet email est déjà associé à un compte";
         }
 
