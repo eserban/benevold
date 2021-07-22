@@ -918,6 +918,78 @@ const client = new MongoClient(uri, {
 
         res.status(code).send(data);
     });
+
+    router.put('/task/status', async (req, res) => {
+        const token = req.header('access-token') ?? null;
+
+        let tokenObject = null;
+        let taskId = req.body.task_id;
+        let taskOid = new mongo.ObjectID(taskId);
+        let newStatus = req.body.new_status;
+
+        let success = true;
+        let code = 200;
+        let errorMessage = null;
+        let response = [];
+
+        const tasksCollection = await client.db(dbName).collection("jello_tasks");
+        const task = await tasksCollection.find({ "_id": taskOid }).toArray();
+
+        if (!token) {
+            success = false;
+            code = 403;
+            errorMessage = "Authentification Failed"
+        } else if (!projectId) {
+            success = false;
+            code = 400;
+            errorMessage = "Veuillez reinseigner l'id du project"
+        } else if (!newName) {
+            success = false;
+            code = 400;
+            errorMessage = "Veuillez reinseigner le nouveau nom"
+        } else if (project.length == 0) {
+            success = false;
+            code = 400;
+            errorMessage = "Ce project n'existe pas";
+        } else {
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
+            if (!tokenObject) {
+                success = false;
+                code = 500;
+                errorMessage = "Your connection token is no more valid";
+            }
+        }
+
+        if (success) {
+            await projectCollection.updateOne({ "_id": projectOid }, { $set: { "status": newStatus } });
+
+            const projectCollection = await client.db(dbName).collection("jello_projects");
+            let projectOid = new mongo.ObjectID(task[0].project_id);
+            let project = await projectCollection.find({"_id": projectOid}).toArray();
+            let projectTasks = project[0].tasks;
+
+            let newProjectTasks = []
+
+            for(let i = 0; i< projectTasks.length; i++){
+                if  (projectTasks[i].task_id.equals(taskOid)){
+                    projectTasks[i].status = newStatus;
+                }
+                newProjectTasks.push(projectTasks[i]);
+            }
+
+            await projectCollection.updateOne({ "_id": projectOid }, { $set: { "tasks": newProjectTasks}});
+
+        }
+
+        const data = {
+            "success": success,
+            "requestCode": code,
+            "error": errorMessage
+        };
+
+        res.status(code).send(data);
+    });
+
 })();
 
 
