@@ -286,7 +286,7 @@ const client = new MongoClient(uri, {
         let projectId = req.body.project_id;
         let projectOid = new mongo.ObjectID(projectId);
         let userId = req.body.user_id;
-        let userOid = new mongo.ObjectID(userId);
+        // let userOid = new mongo.ObjectID(userId);
         let projectFound = null;
 
         let success = true;
@@ -325,7 +325,7 @@ const client = new MongoClient(uri, {
         if (success) {
             projectTeam = project[0].team;
             projectTeam.forEach(user => {
-                if (user._id != userOid) {
+                if (user._id != userId) {
                     newTeam.push(user)
                 }
             });
