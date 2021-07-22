@@ -504,7 +504,7 @@ const client = new MongoClient(uri, {
             success = false;
             code = 400;
             errorMessage = "Veuillez reinseigner l'id de la tache"
-        } else if (project.length == 0) {
+        } else if (task.length == 0) {
             success = false;
             code = 400;
             errorMessage = "Cette tache n'existe pas";
@@ -762,8 +762,8 @@ const client = new MongoClient(uri, {
             let newTeam = [];
 
             for(let i = 0; i<team.length; i++) {
-                if (user._id != userOid) {
-                    newTeam.push(user);
+                if (team[i]._id != userOid) {
+                    newTeam.push(team[i]);
                 }
             }
 
