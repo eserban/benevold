@@ -36,7 +36,7 @@ const client = new MongoClient(uri, {
             let token           = null;
 
             const userCollection    = await client.db(dbName).collection("users");
-            const user              = await userCollection.find({"email": email, "type": type }).limit(1).toArray();
+            const user              = await userCollection.find({"mail": email, "type": type }).limit(1).toArray();
 
             if(!email || !password)
             {
