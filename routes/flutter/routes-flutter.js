@@ -1,7 +1,7 @@
 var express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { userAdminSchema, jwtAdminSignSchema, usersFindSchema, categorySchema } = require("../../modelsDB.js");
+const { userAdminSchema, jwtAdminSignSchema, usersFindSchema, categorieSchema } = require("../../modelsDB.js");
 const countRoutes = require('./routes-count.js');
 let router = express.Router();
 let dbName = "benevold_db"
@@ -151,7 +151,7 @@ const client = new MongoClient(uri, {
 
         if (success) {
             const categoriesCollection = await client.db(dbName).collection("categories");
-            let category = categorySchema(title);
+            let category = categorieSchema(title);
             try{
                 await categoriesCollection.insertOne(category);
             }catch(err) {
