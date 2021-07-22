@@ -333,7 +333,7 @@ const client = new MongoClient(uri, {
         }else if (!profileId) {
             success = false;
             code = 401;
-            errorMessage = "Veuillez entrer l'id de l'utilisateur a effacer";
+            errorMessage = "Veuillez entrer l'id de l'utilisateurs a effacer";
         } else if (profile.length == 0) {
             success = false;
             code = 402;

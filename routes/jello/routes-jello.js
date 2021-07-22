@@ -326,7 +326,7 @@ const client = new MongoClient(uri, {
             projectTeam = project[0].team;
 
             for(let i = 0; i<projectTeam.length ; i++) {
-                if (projectTeam[i].user_id != userOid) {
+                if (projectTeam[i].user_id.equals(userOid)) {
                     newTeam.push(projectTeam[i]);
                 }
             }
@@ -762,7 +762,7 @@ const client = new MongoClient(uri, {
             let newTeam = [];
 
             for(let i = 0; i<team.length; i++) {
-                if (team[i].user_id != userOid) {
+                if (team[i].user_id.equals(userOid)) {
                     newTeam.push(team[i]);
                 }
             }
