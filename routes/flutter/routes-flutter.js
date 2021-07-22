@@ -362,6 +362,10 @@ const client = new MongoClient(uri, {
 
     // définir le point d'entrée `POST /` pour l'enregistrement d'un nouvel utilisateur
     router.post("/add/admin", async (req, res) => {
+
+        const token = req.header('access-token') ?? null;
+
+
         const password = req.body.password ?? null;
         const email = req.body.email ?? null;
 
@@ -390,6 +394,18 @@ const client = new MongoClient(uri, {
             success         = false;
             code            = 402;
             errorMessage    = "Cet email est déjà associé à un compte";
+        } else if (!token)
+        {
+            success         = false;
+            code            = 404;
+            errorMessage    = "Authentification failed";
+        } else {
+            tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
+            if (!tokenObject) {
+                success = false;
+                code = 500;
+                errorMessage = "Your connection token is no more valid";
+            }
         }
 
         if(success)
