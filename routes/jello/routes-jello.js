@@ -348,6 +348,14 @@ const client = new MongoClient(uri, {
             }
         }
 
+        const data = {
+            "success": success,
+            "requestCode": code,
+            "error": errorMessage
+        };
+
+        res.status(code).send(data);
+
 
     });
 
