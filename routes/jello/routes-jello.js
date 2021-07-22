@@ -781,7 +781,7 @@ const client = new MongoClient(uri, {
                     }
                 }
 
-                await projectCollection.updateOne({ "_id": projectOid}, {"$set": {"tasks": newTasks}});
+                await projectCollection.updateOne({ "_id": projectOid}, {$set: {"tasks": newTasks}});
             } else {
                 await tasksCollection.updateOne({ "_id": taskOid }, { $set: { "team": newTeam } });
             }
