@@ -409,6 +409,59 @@ const client = new MongoClient(uri, {
         res.status(code).send(data);
     });
 
+    router.delete('/admin', async (req, res) => {
+        const token = req.header('access-token') ?? null;
+
+        const userId = req.body.id ?? null;
+        let userOid = new mongo.ObjectID(userId);
+    
+        let tokenObject = null;
+    
+        let success         = true;
+        let code            = 200;
+        let errorMessage    = null;
+        let response        = [];
+
+        const userCollection    = await client.db(dbName).collection("flutter_admin_users");
+        const userAdmin = await userCollection.find({ "_id": userOid}).toArray();
+        
+        if(!token){
+          success         = false;
+          code            = 403; 
+          errorMessage    = "Authentification Failed"
+        }else if(!userId){
+            success         = false;
+            code            = 400; 
+            errorMessage    = "Veuillez introduire l'id de l'administrateur a effacer";
+          }else if(userAdmin.length == 0){
+            success         = false;
+            code            = 400; 
+            errorMessage    = "Cet administrateur n'a pas été trouvé";
+          }else{
+          tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
+          if(!tokenObject){
+            success         = false;
+            code            = 500;
+            errorMessage    = "An error has occurred";
+          }
+        }
+    
+        if(success){
+            await userCollection.deleteOne({"_id": userOid});
+        }
+    
+    
+        const data = {
+            "account": userEmail,
+            "success": success,
+            "requestCode": code,
+            "error": errorMessage,
+            "response" : response
+        };
+    
+        res.status(code).send(data);
+    });
+
     router.post("/signin/admin", async (req, res) => {
         try{
             const email = req.body.email ?? null;
