@@ -116,6 +116,9 @@ const client = new MongoClient(uri, {
 
             let time = req.query.time;
 
+            let usernameFromdb = null;
+            let userIdFromDb = null;
+
             let success = true;
             let code = 200;
             let errorMessage = null;
@@ -149,10 +152,14 @@ const client = new MongoClient(uri, {
                 token = jwt.sign(tokenSignSchema, process.env.JWT_KEY, {
                     expiresIn: 86400
                 });
+
+                usernameFromdb = user[0].username;
+                userIdFromDb = user[0]._id;
             }
 
             const data = {
-                "username": username,
+                "username": usernameFromdb,
+                "user_id": userIdFromDb,
                 "success": success,
                 "requestCode": code,
                 "error": errorMessage,
