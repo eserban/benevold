@@ -534,8 +534,8 @@ const client = new MongoClient(uri, {
 
         const tasksCollection = await client.db(dbName).collection("jello_tasks");
         const projectCollection = await client.db(dbName).collection("jello_projects");
-        const task = await tasksCollection.find({ "_id": taskOid }).toArray();
-        const project = await projectCollection.find({ "name": name, "status": status, "description": description, "team": team }).toArray();
+        const task = await tasksCollection.find({ "name": name, "status": status, "description": description, "team": team }).toArray();
+        const project = await projectCollection.find({ "_id": projectOid }).toArray();
 
 
         if (!token) {
