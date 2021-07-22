@@ -48,13 +48,14 @@ function jelloProjectsSchema(name, team, tasks) {
     }
 }
 
-function jelloTasksSchema(name, team, status, description, comments) {
+function jelloTasksSchema(name, team, status, description, comments, projectId) {
     return {
         "name": name,
         "status": status,
         "team": team,
         "description": description,
-        "comments": comments
+        "comments": comments,
+        "project_id": projectId,
     }
 }
 
