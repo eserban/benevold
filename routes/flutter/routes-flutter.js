@@ -228,7 +228,7 @@ const client = new MongoClient(uri, {
         let response = [];
 
         const annoncesCollection = await client.db(dbName).collection("annonces");
-        let annonce = await annonceCollection.find({"_id": annOid}).toArray();
+        let annonce = await annoncesCollection.find({"_id": annOid}).toArray();
 
         if (!token) {
             success = false;
