@@ -286,6 +286,7 @@ const client = new MongoClient(uri, {
         let projectId = req.body.project_id ?? null;
         let projectOid = new mongo.ObjectID(projectId);
         let userId = req.body.user_id ?? null;
+        let userOid = new mongo.ObjectID(userId);
         let projectFound = null;
 
         let success = true;
@@ -323,14 +324,12 @@ const client = new MongoClient(uri, {
 
         if (success) {
             projectTeam = project[0].team;
-            console.log(`${userId}`);
-            // let userOid = new mongo.ObjectID(userId);
-            projectTeam.forEach(user => {
-                console.log(`${user._id}\n`);
-                if (user._id != userId) {
+
+            for(let i = 0; i<projectTeam.length ; i++) {
+                if (projectTeam[i]._id != userOid) {
                     newTeam.push(user)
                 }
-            });
+            }
             if (newTeam.length == 0) {
                 try {
                     await client.db(dbName).collection("jello_projects").deleteOne({ "_id": projectOid })
