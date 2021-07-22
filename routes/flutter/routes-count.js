@@ -51,13 +51,14 @@ const client = new MongoClient(uri, {
             let users = usersCollection.find().project(projection).toArray();
 
             response = users.length;
+            console.log(users.length);
         }
 
         const data = {
             "success": success,
             "requestCode": code,
             "error": errorMessage,
-            "count": response,
+            "response": response,
             "toto": "toto"
         };
 
