@@ -939,15 +939,15 @@ const client = new MongoClient(uri, {
             success = false;
             code = 403;
             errorMessage = "Authentification Failed"
-        } else if (!projectId) {
+        } else if (!taskId) {
             success = false;
             code = 400;
             errorMessage = "Veuillez reinseigner l'id du project"
-        } else if (!newName) {
+        } else if (!newStatus) {
             success = false;
-            code = 400;
+            code = 402;
             errorMessage = "Veuillez reinseigner le nouveau nom"
-        } else if (project.length == 0) {
+        } else if (task.length == 0) {
             success = false;
             code = 400;
             errorMessage = "Ce project n'existe pas";
