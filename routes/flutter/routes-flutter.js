@@ -289,7 +289,7 @@ const client = new MongoClient(uri, {
         } else if (category.length == 0) {
             success = false;
             code = 402;
-            errorMessage = "Cette annonce n'a pas été trouvée";
+            errorMessage = "Cette categorie n'a pas été trouvée";
         } else {
             tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
             if (!tokenObject) {
