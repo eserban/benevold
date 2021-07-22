@@ -761,11 +761,11 @@ const client = new MongoClient(uri, {
             let team = task[0].team;
             let newTeam = [];
 
-            team.foreach(user => {
+            for(let i = 0; i<team.length; i++) {
                 if (user._id != userOid) {
                     newTeam.push(user);
                 }
-            });
+            }
 
             if (newTeam.length == 0) {
                 await taskCollection.deleteOne({ "_id": taskOid });
