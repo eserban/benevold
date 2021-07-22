@@ -275,7 +275,7 @@ const client = new MongoClient(uri, {
         let errorMessage = null;
         let response = [];
 
-        const categoriesCollection = await client.db(dbName).collection("flutter_categories");
+        const categoriesCollection = await client.db(dbName).collection("categories");
         let category = await categoriesCollection.find({"_id": categoryOid}).toArray();
 
         if (!token) {
