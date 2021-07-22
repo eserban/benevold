@@ -22,7 +22,7 @@ const client = new MongoClient(uri, {
     });
 
 
-    router.get('/ios/user', (req, res) => {
+    router.get('/ios/user', async (req, res) => {
         // const token = req.header('access-token') ?? null;
 
         let id = req.query.id ?? null;
