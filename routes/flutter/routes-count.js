@@ -51,7 +51,7 @@ const client = new MongoClient(uri, {
             let users = usersCollection.find().project(projection).toArray();
 
             response = users.length;
-            console.log(users.length);
+            console.log(users);
         }
 
         const data = {
