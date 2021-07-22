@@ -30,7 +30,7 @@ const client = new MongoClient(uri, {
         let success = true;
         let code = 200;
         let errorMessage = null;
-        let response = 0;
+        let response = null;
 
         if (!token) {
             success = false;
