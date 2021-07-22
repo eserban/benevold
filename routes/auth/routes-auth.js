@@ -27,7 +27,7 @@ const client = new MongoClient(uri, {
             const email = req.body.email ?? null;
             const password = req.body.password ?? null;
 
-            const type = req.query.type ?? null;
+            const type = req.query.type == "android" ? "old" : "teen";
 
             let success         = true;
             let code            = 200;
@@ -35,7 +35,7 @@ const client = new MongoClient(uri, {
             let token           = null;
 
             const userCollection    = await client.db(dbName).collection("users");
-            const user              = await userCollection.find({"email": email, "type": type == "android" ? "old" : "teen"}).limit(1).toArray();
+            const user              = await userCollection.find({"email": email, "type": type }).limit(1).toArray();
 
             if(!email || !password)
             {
