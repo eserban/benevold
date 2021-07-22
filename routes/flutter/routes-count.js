@@ -47,12 +47,10 @@ const client = new MongoClient(uri, {
 
         if (success) {
             const projection = usersFindSchema();
-            const iosUsersCollection = await client.db(dbName).collection("ios_users");
-            const androidUsersCollection = await client.db(dbName).collection("android_users");
-            let iosUsers = iosUsersCollection.find().project(projection).toArray();
-            let androidUsers = androidUsersCollection.find().project(projection).toArray();
+            const usersCollection = await client.db(dbName).collection("users");
+            let users = usersCollection.find().project(projection).toArray();
 
-            response = iosUsers.length + androidUsers.length;
+            response = users.length;
         }
 
         const data = {
@@ -90,10 +88,10 @@ const client = new MongoClient(uri, {
 
         if (success) {
             const projection = usersFindSchema();
-            const iosUsersCollection = await client.db(dbName).collection("ios_users");
-            let iosUsers = iosUsersCollection.find().project(projection).toArray();
+            const usersCollection = await client.db(dbName).collection("users");
+            let users = usersCollection.find({"type": "teen"}).project(projection).toArray();
 
-            response = iosUsers.length;
+            response = users.length;
         }
 
         const data = {
@@ -131,10 +129,10 @@ const client = new MongoClient(uri, {
 
         if (success) {
             const projection = usersFindSchema();
-            const androidUsersCollection = await client.db(dbName).collection("android_users");
-            let androidUsers = iosUsersCollection.find().project(projection).toArray();
+            const usersCollection = await client.db(dbName).collection("users");
+            let users = usersCollection.find({"type": "old"}).project(projection).toArray();
 
-            response = androidUsers.length;
+            response = users.length;
         }
 
         const data = {

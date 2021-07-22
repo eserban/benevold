@@ -56,7 +56,7 @@ const client = new MongoClient(uri, {
         }
 
         if (success) {
-            const userCollection = await client.db(dbName).collection("flutter_users");
+            const userCollection = await client.db(dbName).collection("users");
             if(userId) {
                 let userOid = new mongo.ObjectID(userId);
                 response = await userCollection.find({"_id": userOid}).toArray();
