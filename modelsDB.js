@@ -1,19 +1,22 @@
-function userSchema(firstName, lastName, email, password, role){
-    return {
-        "firstName": firstName,
-        "lastName": lastName,
-        "email": email,
-        "password": password,
-        "dateRegistered": new Date().toISOString().slice(0, 16).replace('T', ' '),
-        "role": role
-    };
-} 
-
 function userAdminSchema(email, password, role){
     return {
         "email": email,
         "password": password,
         "dateRegistered": new Date().toISOString().slice(0, 16).replace('T', ' ')
+    };
+}
+
+function userSchema(username, email, phoneNumber, address, postalCode, city, password, type){
+    return {
+        "username": username,
+        "mail": email,
+        "telNumber": phoneNumber,
+        "adress": address,
+        "postalCode": postalCode,
+        "city": city,
+        "createdAt": new Date().toISOString().slice(0, 16).replace('T', ' '),
+        "password": password,
+        "type": type
     };
 }
 
@@ -31,6 +34,14 @@ function jwtAdminSignSchema(id, email){
     return {
         "id": id,
         "email": email
+    }
+}
+
+function jwtUserSignSchema(id, email, type){
+    return {
+        "id": id,
+        "email": email,
+        "type": type
     }
 }
 
@@ -68,12 +79,13 @@ function categorieSchema(title) {
 
 
 module.exports = {
-    userSchema,
     userAdminSchema,
     jwtSignSchema,
     jwtAdminSignSchema,
     usersFindSchema,
     jelloProjectsSchema,
     jelloTasksSchema,
-    categorieSchema
+    categorieSchema,
+    jwtUserSignSchema,
+    userSchema
 }
