@@ -815,8 +815,9 @@ const client = new MongoClient(uri, {
 
         const tasksCollection = await client.db(dbName).collection("jello_tasks");
         const userCollection = await client.db(dbName).collection("jello_users");
+        let projection = usersFindSchema();
         const task = await tasksCollection.find({ "_id": taskOid }).toArray();
-        const user = await userCollection.find({ "_id": userOid }).toArray();
+        const user = await userCollection.find({ "_id": userOid }).project(projection).toArray();
 
         if (!token) {
             success = false;
