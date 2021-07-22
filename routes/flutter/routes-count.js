@@ -48,10 +48,9 @@ const client = new MongoClient(uri, {
         if (success) {
             const projection = usersFindSchema();
             const usersCollection = await client.db(dbName).collection("users");
-            let users = usersCollection.find().project(projection).toArray();
+            let users = await usersCollection.find().project(projection).toArray();
 
             response = users.length;
-            console.log(users);
         }
 
         const data = {
@@ -91,7 +90,7 @@ const client = new MongoClient(uri, {
         if (success) {
             const projection = usersFindSchema();
             const usersCollection = await client.db(dbName).collection("users");
-            let users = usersCollection.find({"type": "teen"}).project(projection).toArray();
+            let users = await usersCollection.find({"type": "teen"}).project(projection).toArray();
 
             response = users.length;
         }
@@ -132,7 +131,7 @@ const client = new MongoClient(uri, {
         if (success) {
             const projection = usersFindSchema();
             const usersCollection = await client.db(dbName).collection("users");
-            let users = usersCollection.find({"type": "old"}).project(projection).toArray();
+            let users = await usersCollection.find({"type": "old"}).project(projection).toArray();
 
             response = users.length;
         }
@@ -172,7 +171,7 @@ const client = new MongoClient(uri, {
 
         if (success) {
             const annoncesCollection = await client.db(dbName).collection("annonces");
-            let annonces = annoncesCollection.find().toArray();
+            let annonces = await annoncesCollection.find().toArray();
 
             response = annonces.length;
         }
