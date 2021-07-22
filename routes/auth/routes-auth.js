@@ -2,7 +2,7 @@
 var express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { userAdminSchema, usersFindSchema, jwtUserSignSchema, userSchema } = require("../../modelsDB.js");
+const { usersFindSchema, jwtUserSignSchema, userSchema } = require("../../modelsDB.js");
 var router = express.Router();
 let dbName = "benevold_db"
 
@@ -134,15 +134,6 @@ const client = new MongoClient(uri, {
 
         res.status(code).send(data);
     });
-
-
-
-
-
-
-
-
-
 
 })();
 
