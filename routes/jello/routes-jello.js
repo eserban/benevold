@@ -769,7 +769,7 @@ const client = new MongoClient(uri, {
 
             if (newTeam.length == 0) {
                 await tasksCollection.deleteOne({ "_id": taskOid });
-                let projectCollection = await client.db(dbName).collection("jello_projects");
+                const projectCollection = await client.db(dbName).collection("jello_projects");
                 let projectOid = new mongo.ObjectID(task[0].project_id);
                 let project = await projectCollection.find({"_id": projectOid}).toArray();
                 let projectTasks = project[0].tasks;
@@ -780,6 +780,7 @@ const client = new MongoClient(uri, {
                         newTasks.push(projectTasks[i]);
                     }
                 }
+                console.log(newTasks);
 
                 await projectCollection.updateOne({ "_id": projectOid}, {$set: {"tasks": newTasks}});
             } else {
