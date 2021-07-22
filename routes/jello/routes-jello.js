@@ -227,7 +227,7 @@ const client = new MongoClient(uri, {
         const token = req.header('access-token') ?? null;
 
         let tokenObject = null;
-        let projectId = req.body.project_id;
+        let projectId = req.body.project_id ?? null;
 
         var projectOid = new mongo.ObjectID(projectId);
         let projectFound = null;
@@ -500,7 +500,7 @@ const client = new MongoClient(uri, {
             success = false;
             code = 403;
             errorMessage = "Authentification Failed"
-        } else if (!projectId) {
+        } else if (!taskId) {
             success = false;
             code = 400;
             errorMessage = "Veuillez reinseigner l'id de la tache"
