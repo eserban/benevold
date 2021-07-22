@@ -57,7 +57,8 @@ const client = new MongoClient(uri, {
             "success": success,
             "requestCode": code,
             "error": errorMessage,
-            "response": response
+            "response": response,
+            "toto": "toto"
         };
 
         res.status(code).send(data);
