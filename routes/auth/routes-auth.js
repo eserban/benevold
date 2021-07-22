@@ -34,7 +34,7 @@ const client = new MongoClient(uri, {
             let errorMessage    = null;
             let token           = null;
 
-            const userCollection    = await client.db(dbName).collection("flutter_admin_users");
+            const userCollection    = await client.db(dbName).collection("users");
             const user              = await userCollection.find({"email": email, "type": type == "android" ? "old" : "teen"}).limit(1).toArray();
 
             if(!email || !password)
@@ -95,7 +95,7 @@ const client = new MongoClient(uri, {
         let code            = 200;
         let errorMessage    = null;
 
-        const userCollection    = await client.db(dbName).collection("admin_users");
+        const userCollection    = await client.db(dbName).collection("users");
         const user              = await userCollection.find({"username": username, "type": type}).toArray();
 
         if(!password || !emailRegex.test(email) || !username || !phoneNumber 
