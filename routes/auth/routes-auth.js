@@ -28,6 +28,7 @@ const client = new MongoClient(uri, {
             const password = req.body.password ?? null;
 
             const type = req.query.type == "android" ? "old" : "teen";
+            console.log(type);
 
             let success         = true;
             let code            = 200;
