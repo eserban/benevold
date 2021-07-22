@@ -5,10 +5,10 @@ const swiftRoutes = require('./routes/swift/routes-ios.js');
 const cors = require("cors");
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
 const app = express();
 app.use(express.json());
 
+app.use(cors());
 app.use('/jello', jelloRoutes);
 app.use('/flutter', flutterRoutes);
 app.use('/ios', swiftRoutes);
