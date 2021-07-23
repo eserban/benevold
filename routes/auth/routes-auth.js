@@ -36,7 +36,7 @@ const client = new MongoClient(uri, {
             let token           = null;
 
             const userCollection    = await client.db(dbName).collection("users");
-            const user              = await userCollection.find({"mail": email, "type": type }).limit(1).toArray();
+            const user              = await userCollection.find({"mail": login, "type": type }).limit(1).toArray();
 
             if(!email || !password)
             {
@@ -56,7 +56,7 @@ const client = new MongoClient(uri, {
 
             if(success){
                 //if body entries are OK we generate a token for the user
-                let tokenSignSchema = jwtUserSignSchema(user[0]._id, user[0].email, user[0].type);
+                let tokenSignSchema = jwtUserSignSchema(user[0]._id, user[0].mail, user[0].type);
                 
                 token = jwt.sign(tokenSignSchema, process.env.JWT_KEY, {
                     expiresIn: 86400 // expires in 24 hours
@@ -128,10 +128,10 @@ const client = new MongoClient(uri, {
             let hashedPwd = await bcrypt.hash(password,saltRound);
             await userCollection.insertOne(userSchema(fullName, email, phoneNumber, address, postalCode, city, hashedPwd, type));
 
-            let userOnceAdded = await userCollection.find({"fullName": fullName, "email": email}).toArray();
+            let userOnceAdded = await userCollection.find({"fullName": fullName, "mail": email}).toArray();
 
             //if body entries are OK we generate a token for the user
-            let tokenSignSchema = jwtUserSignSchema(userOnceAdded[0]._id, userOnceAdded[0].email, userOnceAdded[0].type);
+            let tokenSignSchema = jwtUserSignSchema(userOnceAdded[0]._id, userOnceAdded[0].mail, userOnceAdded[0].type);
                 
             token = jwt.sign(tokenSignSchema, process.env.JWT_KEY, {
                 expiresIn: 86400 // expires in 24 hours
