@@ -24,7 +24,7 @@ const client = new MongoClient(uri, {
 
     router.post("/signin", async (req, res) => {
         try{
-            const email = req.body.email ?? null;
+            const login = req.body.login ?? null;
             const password = req.body.password ?? null;
 
             const type = req.query.type == "android" ? "old" : "teen";
@@ -67,7 +67,8 @@ const client = new MongoClient(uri, {
                 "success": success,
                 "requestCode": code,
                 "error": errorMessage,
-                "token" : token
+                "token" : token,
+                "user_id": user[0]._id
             };
 
             res.status(code).send(data);
@@ -98,7 +99,7 @@ const client = new MongoClient(uri, {
         response = null;
 
         const userCollection    = await client.db(dbName).collection("users");
-        const user              = await userCollection.find({"username": username, "type": type}).toArray();
+        const user              = await userCollection.find({"fullName": fullName, "type": type}).toArray();
 
         if(!password || !emailRegex.test(email) || !fullName)
         {
@@ -125,16 +126,16 @@ const client = new MongoClient(uri, {
             let hashedPwd = await bcrypt.hash(password,saltRound);
             await userCollection.insertOne(userSchema(fullName, email, phoneNumber, address, postalCode, city, hashedPwd, type));
 
-            let user = await userCollection.find({"fullName": fullName, "email": email}).toArray();
+            let userOnceAdded = await userCollection.find({"fullName": fullName, "email": email}).toArray();
 
-            response = user[0]._id;
+            response = userOnceAdded[0]._id;
         }
 
         const data = {
             "success": success,
             "requestCode": code,
             "error": errorMessage,
-            "response": response
+            "user_id": response
         };
 
         res.status(code).send(data);
