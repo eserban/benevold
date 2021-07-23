@@ -209,11 +209,49 @@ const client = new MongoClient(uri, {
 
      */
 
-    // router.post('/password/new', async (req, res) => {
-    //     const type = req.query.type == "android" ? "old" : "teen";
+     router.post('/password/new', async (req, res) => {
+        const type = req.query.type == "android" ? "old" : "teen";
 
+        let userId = req.body.user_id ?? null;
+        let userOid = new mongo.ObjectID(userId);
+        let newPassword = req.body.new_password ?? null;
 
-    // });
+        let success         = true;
+        let code            = 200;
+        let errorMessage    = null;
+
+        response = null;
+
+        const userCollection    = await client.db(dbName).collection("users");
+        const user              = await userCollection.find({"_id": userOid, "type": type}).toArray();
+
+        if(!!userId || !newPassword)
+        {
+            success         = false;
+            code            = 400;
+            errorMessage    = "Veuillez reinseigner l'id de l'utilisateur et le nouveau password";
+        }else if (user.length == 0)
+        {
+            success         = false;
+            code            = 402;
+            errorMessage    = "Cet id est associé à aucun compte";
+        }
+
+        if(success) {
+            const saltRound = 10;
+            let hashedPwd = await bcrypt.hash(newPassword,saltRound);
+
+            await userCollection.updateOne({ "_id": projectOid, "type": type}, {$set:{"password": hashedPwd}});
+        }
+
+        const data = {
+            "success": success,
+            "requestCode": code,
+            "error": errorMessage
+        };
+
+        res.status(code).send(data);
+    });
 
 })();
 
