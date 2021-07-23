@@ -79,13 +79,12 @@ const client = new MongoClient(uri, {
 
     router.post('/signup', async(req, res) => {
 
-
-        const username = req.body.username ?? null;
-        const email = req.body.mail ?? null;
-        const phoneNumber = req.body.telNumber ?? null;
-        const address = req.body.adress ?? null;
-        const postalCode = req.body.postalCode ?? null;
-        const city = req.body.city ?? null;
+        const fullName = req.body.fullName ?? null;
+        const email = req.body.email ?? null;
+        const phoneNumber = req.body.telNumber ?? "";
+        const address = req.body.adress ?? "";
+        const postalCode = req.body.postalCode ?? "";
+        const city = req.body.city ?? "";
         const password = req.body.password ?? null;
         const type = req.query.type == "android" ? "old" : "teen";
 
@@ -96,11 +95,12 @@ const client = new MongoClient(uri, {
         let code            = 200;
         let errorMessage    = null;
 
+        response = null;
+
         const userCollection    = await client.db(dbName).collection("users");
         const user              = await userCollection.find({"username": username, "type": type}).toArray();
 
-        if(!password || !emailRegex.test(email) || !username || !phoneNumber 
-            || !address || !postalCode || !city || !type)
+        if(!password || !emailRegex.test(email) || !fullName)
         {
             success         = false;
             code            = 400;
@@ -123,13 +123,18 @@ const client = new MongoClient(uri, {
             //If body request is OK, password hash and adding user to db
             const saltRound = 10;
             let hashedPwd = await bcrypt.hash(password,saltRound);
-            await userCollection.insertOne(userSchema(username, email, phoneNumber, address, postalCode, city, hashedPwd, type));
+            await userCollection.insertOne(userSchema(fullName, email, phoneNumber, address, postalCode, city, hashedPwd, type));
+
+            let user = await userCollection.find({"fullName": fullName, "email": email}).toArray();
+
+            response = user[0]._id;
         }
 
         const data = {
             "success": success,
             "requestCode": code,
-            "error": errorMessage
+            "error": errorMessage,
+            "response": response
         };
 
         res.status(code).send(data);

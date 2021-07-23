@@ -8,7 +8,7 @@ function userAdminSchema(email, password, role){
 
 function userSchema(username, email, phoneNumber, address, postalCode, city, password, type){
     return {
-        "username": username,
+        "fullName": username,
         "mail": email,
         "telNumber": phoneNumber,
         "adress": address,
