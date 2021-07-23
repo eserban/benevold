@@ -92,9 +92,11 @@ const client = new MongoClient(uri, {
 
         const emailRegex = /^\S+@\S+$/;
 
+
         let success         = true;
         let code            = 200;
         let errorMessage    = null;
+        let token = null;
 
         response = null;
 
@@ -128,6 +130,13 @@ const client = new MongoClient(uri, {
 
             let userOnceAdded = await userCollection.find({"fullName": fullName, "email": email}).toArray();
 
+            //if body entries are OK we generate a token for the user
+            let tokenSignSchema = jwtUserSignSchema(userOnceAdded[0]._id, userOnceAdded[0].email, userOnceAdded[0].type);
+                
+            token = jwt.sign(tokenSignSchema, process.env.JWT_KEY, {
+                expiresIn: 86400 // expires in 24 hours
+            });
+
             response = userOnceAdded[0]._id;
         }
 
@@ -135,7 +144,8 @@ const client = new MongoClient(uri, {
             "success": success,
             "requestCode": code,
             "error": errorMessage,
-            "user_id": response
+            "user_id": response,
+            "token": token,
         };
 
         res.status(code).send(data);
