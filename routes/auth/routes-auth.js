@@ -103,7 +103,7 @@ const client = new MongoClient(uri, {
         const userCollection    = await client.db(dbName).collection("users");
         const user              = await userCollection.find({"fullName": fullName, "type": type}).toArray();
 
-        if(!password || !emailRegex.test(email) || !fullName)
+        if(!password || !email || !fullName)
         {
             success         = false;
             code            = 400;
@@ -150,6 +150,69 @@ const client = new MongoClient(uri, {
 
         res.status(code).send(data);
     });
+
+    /**
+     * POST /android/password/email :
+     */
+    router.post('/password/email', async (req, res) => {
+
+        const email = req.body.email ?? null;
+
+        const type = req.query.type == "android" ? "old" : "teen";
+
+
+        let success         = true;
+        let code            = 200;
+        let errorMessage    = null;
+
+        response = null;
+
+        const userCollection    = await client.db(dbName).collection("users");
+        const user              = await userCollection.find({"mail": email, "type": type}).toArray();
+
+        if(!email)
+        {
+            success         = false;
+            code            = 400;
+            errorMessage    = "Veuillez reinseigner l'email de l'utilisateur";
+        }else if (user.length == 0)
+        {
+            success         = false;
+            code            = 402;
+            errorMessage    = "Cet email est associé à aucun compte";
+        }
+
+
+        if(success)  {
+            response = user[0]._id;
+        }
+
+        const data = {
+            "success": success,
+            "requestCode": code,
+            "error": errorMessage,
+            "user_id": response
+        };
+
+        res.status(code).send(data);
+
+    });
+
+    /**
+     * PUT /android/password/new :
+     * 
+     *           Req {
+            id_user : id_user ,
+            new_password : new_password
+        }
+
+     */
+
+    // router.post('/password/new', async (req, res) => {
+    //     const type = req.query.type == "android" ? "old" : "teen";
+
+
+    // });
 
 })();
 
