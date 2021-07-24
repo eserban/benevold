@@ -258,12 +258,6 @@ const client = new MongoClient(uri, {
 
   /**
    * //la route pour recuperer tout les annonces du profil
-      POST /android/annonces :
-      Req {
-          user_id : user_id,
-          token : token,
-      }
-      Trier par ordre decroissant de la date
    */
 
   router.post('/annonces', async(req, res)=> {
@@ -316,6 +310,68 @@ const client = new MongoClient(uri, {
     res.status(code).send(data);
 
   });
+
+
+  /**
+   * //la route pour changer le status de l'annonce en "terminé" 
+      POST /android/annonce/status :
+      Req {
+          annonce_id : annonce_id
+      }
+   */
+  router.post('/annonce/status', async(req, res)=> {
+    const token = req.header('access-token') ?? null;
+
+    const annonceId = req.body.annonce_id ?? null;
+    let annonceOid = new mongo.ObjectID(annonceId);
+
+    let tokenObject = null;
+    let userEmail = null;
+
+    let success         = true;
+    let code            = 200;
+    let errorMessage    = null;
+    let response        = [];
+
+    const annoncesCollection    = await client.db(dbName).collection("annonces");
+    const annonce              = await annoncesCollection.find({"_id": annonceOid}).toArray();
+
+    if(!token){
+      success         = false;
+      code            = 403; 
+      errorMessage    = "Authentification Failed"
+    }else if(!annonceId){
+      success         = false;
+      code            = 400; 
+      errorMessage    = "Veuillez introduire les informations de l'annonce"
+    }else if(annonce.length == 0){
+      success         = false;
+      code            = 402; 
+      errorMessage    = "Cette annonce n'a pas été trouvé";
+    }else{
+      tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
+      if(!tokenObject){
+        success         = false;
+        code            = 500;
+        errorMessage    = "An error has occurred";
+      }
+    }
+
+    if(success) {
+      await annoncesCollection.updateOne({ "_id":annonceOid}, {$set: {"status": "terminé"}});
+    }
+
+
+  });
+
+
+const data = {
+      "success": success,
+      "requestCode": code,
+      "error": errorMessage
+    };
+
+    res.status(code).send(data);
 })();
 
 module.exports = router;
