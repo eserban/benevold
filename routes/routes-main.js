@@ -75,3 +75,5 @@ const client = new MongoClient(uri, {
   });
 
 })();
+
+module.exports = router;
