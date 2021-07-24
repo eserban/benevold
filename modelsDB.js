@@ -77,6 +77,34 @@ function categorieSchema(title) {
     }
 }
 
+/**
+ * const userId = req.body.user_id ?? null;
+    const title = req.body.title ?? null;
+    const category = req.body.category ?? null;
+    const description = req.body.description ?? null;
+    const phone = req.body.phone ?? null;
+    const email = req.body.email ?? null;
+    const contact = req.body.contact ?? null;
+    const address = req.body.address ?? null;
+    const date = req.body.date ?? null;
+    const status = "en cours";
+ */
+
+function annonceSchema(userId, title, category, description, phone, email, contact, address, date, status) {
+    return {
+        "user_id": userId,
+        "title": title,
+        "category": category,
+        "description": description,
+        "phone": phone,
+        "email": email,
+        "contact": contact,
+        "address": address,
+        "date": date,
+        "status": "en cours"
+    }
+}
+
 
 
 module.exports = {
@@ -88,5 +116,6 @@ module.exports = {
     jelloTasksSchema,
     categorieSchema,
     jwtUserSignSchema,
-    userSchema
+    userSchema,
+    annonceSchema
 }
