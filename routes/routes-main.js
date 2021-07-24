@@ -36,7 +36,8 @@ const client = new MongoClient(uri, {
     let response        = [];
 
     const userCollection    = await client.db(dbName).collection("users");
-    const user              = await userCollection.find({"_id": userOid, 'type': type}).limit(1).toArray();
+    const projection = usersFindSchema();
+    const user              = await userCollection.find({"_id": userOid, 'type': type}).project(projection).limit(1).toArray();
 
     if(!token){
       success         = false;
