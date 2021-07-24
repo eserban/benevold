@@ -7,6 +7,7 @@ var router = express.Router();
 let dbName = "benevold_db"
 
 const MongoClient = require("mongodb").MongoClient;
+const mongo = require("mongodb");
 const uri = process.env.MONGO_URI || "mongodb+srv://admin-benevold:MaqLBQjdNLmm6b4R@cluster0.qf07i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
