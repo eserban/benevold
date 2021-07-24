@@ -102,7 +102,7 @@ const client = new MongoClient(uri, {
         response = null;
 
         const userCollection    = await client.db(dbName).collection("users");
-        const user              = await userCollection.find({"fullName": fullName, "type": type}).toArray();
+        const user              = await userCollection.find({"mail": email, "type": type}).toArray();
 
         if(!password || !email || !fullName)
         {
@@ -244,7 +244,7 @@ const client = new MongoClient(uri, {
             await userCollection.updateOne({ "_id": projectOid, "type": type}, {$set:{"password": hashedPwd}});
         }
 
-        
+
         const data = {
             "success": success,
             "requestCode": code,
