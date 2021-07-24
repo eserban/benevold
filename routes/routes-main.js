@@ -361,17 +361,17 @@ const client = new MongoClient(uri, {
       await annoncesCollection.updateOne({ "_id":annonceOid}, {$set: {"status": "terminé"}});
     }
 
-
-  });
-
-
-const data = {
+    const data = {
       "success": success,
       "requestCode": code,
       "error": errorMessage
     };
 
     res.status(code).send(data);
+
+  });
+
+
 })();
 
 module.exports = router;
