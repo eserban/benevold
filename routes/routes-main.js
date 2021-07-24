@@ -219,7 +219,7 @@ const client = new MongoClient(uri, {
       }
    */
 
-  router.post('annonce', async (req, res) => {
+  router.post('/annonce', async (req, res) => {
     const token = req.header('access-token') ?? null;
 
     const annonceId = req.body.annonce_id ?? null;
