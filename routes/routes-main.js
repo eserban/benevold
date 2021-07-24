@@ -2,7 +2,7 @@
 var express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { usersFindSchema, annonceSchema,sortByDate } = require("../modelsDB.js");
+const { usersFindSchema, annonceSchema,sortByDate, messageFindSchema } = require("../modelsDB.js");
 var router = express.Router();
 let dbName = "benevold_db"
 
@@ -398,10 +398,11 @@ const client = new MongoClient(uri, {
 
         if (success) {
           const messageCollection = await client.db(dbName).collection('message');
-          let message = await messageCollection.find().toArray();
+          let projection = messageFindSchema();
+          let message = await messageCollection.find().project(projection).toArray();
           response = message[0];
         }
-        
+
         const data = {
           "success": success,
           "requestCode": code,

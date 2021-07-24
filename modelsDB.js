@@ -52,6 +52,12 @@ function usersFindSchema(){
     }
 }
 
+function messageFindSchema(){
+    return {
+        "_id": 0
+    }
+}
+
 function jelloProjectsSchema(name, team, tasks) {
     return {
         "name": name,
@@ -76,19 +82,6 @@ function categorieSchema(title) {
         "title": title
     }
 }
-
-/**
- * const userId = req.body.user_id ?? null;
-    const title = req.body.title ?? null;
-    const category = req.body.category ?? null;
-    const description = req.body.description ?? null;
-    const phone = req.body.phone ?? null;
-    const email = req.body.email ?? null;
-    const contact = req.body.contact ?? null;
-    const address = req.body.address ?? null;
-    const date = req.body.date ?? null;
-    const status = "en cours";
- */
 
 function annonceSchema(userId, title, category, description, phone, email, contact, address, date, time) {
     return {
@@ -125,5 +118,6 @@ module.exports = {
     jwtUserSignSchema,
     userSchema,
     annonceSchema,
-    sortByDate
+    sortByDate,
+    messageFindSchema
 }
