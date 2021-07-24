@@ -369,49 +369,98 @@ const client = new MongoClient(uri, {
 
   /**
    * //la route pour recuperer le message du jour
-      GET /message :
+   */
+
+  router.get('/message', async (req, res) => {
+    const token = req.header('access-token') ?? null;
+
+    let success         = true;
+    let code            = 200;
+    let errorMessage    = null;
+    let response        = [];
+
+    if(!token){
+      success         = false;
+      code            = 403; 
+      errorMessage    = "Authentification Failed"
+    }else{
+      tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
+      if(!tokenObject){
+        success         = false;
+        code            = 500;
+        errorMessage    = "An error has occurred";
+      }
+    }
+
+    if (success) {
+      const messageCollection = await client.db(dbName).collection('message');
+      let projection = messageFindSchema();
+      let message = await messageCollection.find().project(projection).toArray();
+      response = message[0];
+    }
+
+    const data = {
+      "success": success,
+      "requestCode": code,
+      "error": errorMessage,
+      "response" : response
+    };
+
+    res.status(code).send(data);
+  });
+
+  /**
+   * //la route pour recuperer les categories
+      GET /categories :
       RES {
-          message : message
+          "categories" : [{ 
+            "nom_categorie" : "nom_categorie"
+          },{ 
+            "nom_categorie" : "nom_categorie"
+          },{ 
+            "nom_categorie" : "nom_categorie"
+          },{ 
+            "nom_categorie" : "nom_categorie"
+          }]
       }
    */
 
-      router.get('/message', async (req, res) => {
-        const token = req.header('access-token') ?? null;
+  router.get('/categories',async (req, res) => {
+    const token = req.header('access-token') ?? null;
 
-        let success         = true;
-        let code            = 200;
-        let errorMessage    = null;
-        let response        = [];
+    let success         = true;
+    let code            = 200;
+    let errorMessage    = null;
+    let response        = [];
 
-        if(!token){
-          success         = false;
-          code            = 403; 
-          errorMessage    = "Authentification Failed"
-        }else{
-          tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
-          if(!tokenObject){
-            success         = false;
-            code            = 500;
-            errorMessage    = "An error has occurred";
-          }
-        }
+    if(!token){
+      success         = false;
+      code            = 403; 
+      errorMessage    = "Authentification Failed"
+    }else{
+      tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
+      if(!tokenObject){
+        success         = false;
+        code            = 500;
+        errorMessage    = "An error has occurred";
+      }
+    }
 
-        if (success) {
-          const messageCollection = await client.db(dbName).collection('message');
-          let projection = messageFindSchema();
-          let message = await messageCollection.find().project(projection).toArray();
-          response = message[0];
-        }
+    if (success) {
+      const catCollection = await client.db(dbName).collection('categories');
+      let categories = await catCollection.find().toArray();
+      response = categories;
+    }
 
-        const data = {
-          "success": success,
-          "requestCode": code,
-          "error": errorMessage,
-          "response" : response
-        };
-    
-        res.status(code).send(data);
-      });
+    const data = {
+      "success": success,
+      "requestCode": code,
+      "error": errorMessage,
+      "response" : response
+    };
+
+    res.status(code).send(data);
+  });
 
       
 
