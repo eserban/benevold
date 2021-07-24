@@ -450,7 +450,7 @@ const client = new MongoClient(uri, {
 
         if (success) {
           await messageCollection.deleteMany();
-          await messageCollection.insertOne({"message": message});
+          await messageCollection.insertOne({"message": new_message});
         }
 
         const data = {
