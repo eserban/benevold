@@ -241,7 +241,7 @@ const client = new MongoClient(uri, {
             const saltRound = 10;
             let hashedPwd = await bcrypt.hash(newPassword,saltRound);
 
-            await userCollection.updateOne({ "_id": projectOid, "type": type}, {$set:{"password": hashedPwd}});
+            await userCollection.updateOne({ "_id": userOid, "type": type}, {$set:{"password": hashedPwd}});
         }
 
 
