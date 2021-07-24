@@ -413,54 +413,7 @@ const client = new MongoClient(uri, {
         res.status(code).send(data);
       });
 
-      router.post('/message', async (req, res) => {
-        const token = req.header('access-token') ?? null;
-
-        const new_message = req.body.message ?? null;
-
-        let success         = true;
-        let code            = 200;
-        let errorMessage    = null;
-        let response        = [];
-
-        const messageCollection = await client.db(dbName).collection('message');
-        let projection = messageFindSchema();
-        let message = await messageCollection.find().project(projection).toArray();
-
-        if(!token){
-          success         = false;
-          code            = 403; 
-          errorMessage    = "Authentification Failed"
-        }else if(!message){
-          success         = false;
-          code            = 403; 
-          errorMessage    = "veuillez entrer le nouveau message"
-        }else if(message.length == 0){
-          success         = false;
-          code            = 403; 
-          errorMessage    = "aucun message n'a ete trouvé"
-        }else{
-          tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
-          if(!tokenObject){
-            success         = false;
-            code            = 500;
-            errorMessage    = "An error has occurred";
-          }
-        }
-
-        if (success) {
-          await messageCollection.deleteMany();
-          await messageCollection.insertOne({"message": new_message});
-        }
-
-        const data = {
-          "success": success,
-          "requestCode": code,
-          "error": errorMessage
-        };
-    
-        res.status(code).send(data);
-      });
+      
 
 
 })();
