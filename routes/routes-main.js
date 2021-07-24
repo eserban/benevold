@@ -375,7 +375,7 @@ const client = new MongoClient(uri, {
       }
    */
 
-      router.get('/message', (req, res) => {
+      router.get('/message', async (req, res) => {
         const token = req.header('access-token') ?? null;
 
         let success         = true;
