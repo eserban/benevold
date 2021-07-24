@@ -244,6 +244,7 @@ const client = new MongoClient(uri, {
             await userCollection.updateOne({ "_id": projectOid, "type": type}, {$set:{"password": hashedPwd}});
         }
 
+        
         const data = {
             "success": success,
             "requestCode": code,
