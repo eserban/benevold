@@ -314,10 +314,6 @@ const client = new MongoClient(uri, {
 
   /**
    * //la route pour changer le status de l'annonce en "terminé" 
-      POST /android/annonce/status :
-      Req {
-          annonce_id : annonce_id
-      }
    */
   router.post('/annonce/status', async(req, res)=> {
     const token = req.header('access-token') ?? null;
@@ -370,6 +366,51 @@ const client = new MongoClient(uri, {
     res.status(code).send(data);
 
   });
+
+  /**
+   * //la route pour recuperer le message du jour
+      GET /message :
+      RES {
+          message : message
+      }
+   */
+
+      router.get('/message', (req, res) => {
+        const token = req.header('access-token') ?? null;
+
+        let success         = true;
+        let code            = 200;
+        let errorMessage    = null;
+        let response        = [];
+
+        if(!token){
+          success         = false;
+          code            = 403; 
+          errorMessage    = "Authentification Failed"
+        }else{
+          tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
+          if(!tokenObject){
+            success         = false;
+            code            = 500;
+            errorMessage    = "An error has occurred";
+          }
+        }
+
+        if (success) {
+          const messageCollection = await client.db(dbName).collection('message');
+          let message = await messageCollection.find().toArray();
+          response = message[0];
+        }
+        
+        const data = {
+          "success": success,
+          "requestCode": code,
+          "error": errorMessage,
+          "response" : response
+        };
+    
+        res.status(code).send(data);
+      });
 
 
 })();
