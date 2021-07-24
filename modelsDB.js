@@ -90,7 +90,7 @@ function categorieSchema(title) {
     const status = "en cours";
  */
 
-function annonceSchema(userId, title, category, description, phone, email, contact, address, date, status) {
+function annonceSchema(userId, title, category, description, phone, email, contact, address, date, time) {
     return {
         "user_id": userId,
         "title": title,
@@ -101,6 +101,7 @@ function annonceSchema(userId, title, category, description, phone, email, conta
         "contact": contact,
         "address": address,
         "date": date,
+        "time": time,
         "status": "en cours"
     }
 }

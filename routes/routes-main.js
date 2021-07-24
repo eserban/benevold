@@ -166,6 +166,7 @@ const client = new MongoClient(uri, {
     const contact = req.body.contact ?? null;
     const address = req.body.address ?? null;
     const date = req.body.date ?? null;
+    const time = req.body.time ?? null;
 
     const type = req.query.type == "android" ? "old" : "teen";
 
@@ -179,7 +180,7 @@ const client = new MongoClient(uri, {
       success         = false;
       code            = 403; 
       errorMessage    = "Authentification Failed"
-    }else if(!userId || !title || !category || !description || !phone || !contact || !email || !address || !date){
+    }else if(!userId || !title || !category || !description || !phone || !contact || !email || !address || !date || !time){
       success         = false;
       code            = 400; 
       errorMessage    = "Veuillez introduire les informations de l'annonce"
@@ -198,7 +199,7 @@ const client = new MongoClient(uri, {
 
     if (success) {
       const annoncesCollection = await client.db(dbName).collection("annonces");
-      await annoncesCollection.insertOne(annonceSchema(userId, title, category, description, phone, email, contact, address, date));
+      await annoncesCollection.insertOne(annonceSchema(userId, title, category, description, phone, email, contact, address, date, time));
     }
 
 
