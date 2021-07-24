@@ -2,7 +2,7 @@
 var express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { usersFindSchema, annonceSchema } = require("../modelsDB.js");
+const { usersFindSchema, annonceSchema,sortByDate } = require("../modelsDB.js");
 var router = express.Router();
 let dbName = "benevold_db"
 
@@ -200,23 +200,7 @@ const client = new MongoClient(uri, {
   });
 
   /**
-   * //la route pour recuperer les infos d'annonce
-      POST /android/annonce :
-      Req {
-          annonce_id : annonce_id,
-      }
-      RES : {
-              user_id,
-              title: title, 
-              category: category,
-              description: description,
-              phone: phone,
-              email: email,
-              contact: contact, 
-              address: address,
-              date: date,
-              time: time
-      }
+   * la route pour recuperer les infos d'annonce
    */
 
   router.post('/annonce', async (req, res) => {
@@ -272,7 +256,66 @@ const client = new MongoClient(uri, {
   });
 
 
+  /**
+   * //la route pour recuperer tout les annonces du profil
+      POST /android/annonces :
+      Req {
+          user_id : user_id,
+          token : token,
+      }
+      Trier par ordre decroissant de la date
+   */
 
+  router.post('/annonces', async(req, res)=> {
+    const token = req.header('access-token') ?? null;
+
+    const userId = req.body.user_id ?? null;
+  
+    let tokenObject = null;
+    let userEmail = null;
+
+    let success         = true;
+    let code            = 200;
+    let errorMessage    = null;
+    let response        = [];
+
+    const annoncesCollection    = await client.db(dbName).collection("annonces");
+  
+    const annonce              = await annoncesCollection.find({"user_id": userId}).sort(sortByDate()).toArray();
+
+    if(!token){
+      success         = false;
+      code            = 403; 
+      errorMessage    = "Authentification Failed"
+    }else if(!userId){
+      success         = false;
+      code            = 400; 
+      errorMessage    = "Veuillez introduire les informations de l'utilisateur"
+    }else{
+      tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
+      if(!tokenObject){
+        success         = false;
+        code            = 500;
+        errorMessage    = "An error has occurred";
+      }
+    }
+
+    if (success) {
+      response = annonce
+    }
+
+
+
+    const data = {
+      "success": success,
+      "requestCode": code,
+      "error": errorMessage,
+      "response" : response
+    };
+
+    res.status(code).send(data);
+
+  });
 })();
 
 module.exports = router;
