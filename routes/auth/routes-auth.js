@@ -225,7 +225,7 @@ const client = new MongoClient(uri, {
         const userCollection    = await client.db(dbName).collection("users");
         const user              = await userCollection.find({"_id": userOid, "type": type}).toArray();
 
-        if(!!userId || !newPassword)
+        if(!userId || !newPassword)
         {
             success         = false;
             code            = 400;
