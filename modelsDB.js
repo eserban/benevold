@@ -6,17 +6,18 @@ function userAdminSchema(email, password, role){
     };
 }
 
-function userSchema(username, email, phoneNumber, address, postalCode, city, password, type){
+function userSchema(username, email, phoneNumber, address, postalCode, city, password, type, picLink){
     return {
         "fullName": username,
-        "mail": email,
+        "email": email,
         "telNumber": phoneNumber,
         "adress": address,
         "postalCode": postalCode,
         "city": city,
         "createdAt": new Date().toISOString().slice(0, 16).replace('T', ' '),
         "password": password,
-        "type": type
+        "type": type,
+        "picLink": picLink
     };
 }
 
