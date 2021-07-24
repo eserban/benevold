@@ -79,7 +79,6 @@ const client = new MongoClient(uri, {
     });
 
     router.post('/signup', async(req, res) => {
-        console.log(req);
 
         const fullName = req.body.fullName ?? null;
         const email = req.body.email ?? null;
