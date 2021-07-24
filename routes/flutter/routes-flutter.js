@@ -1,7 +1,7 @@
 var express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { userAdminSchema, jwtAdminSignSchema, usersFindSchema, categorieSchema } = require("../../modelsDB.js");
+const { userAdminSchema, jwtAdminSignSchema, usersFindSchema, categorieSchema, messageFindSchema } = require("../../modelsDB.js");
 const countRoutes = require('./routes-count.js');
 let router = express.Router();
 let dbName = "benevold_db"
