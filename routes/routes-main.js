@@ -453,7 +453,50 @@ const client = new MongoClient(uri, {
   });
 
       
+  router.get('/annonces', async(req, res)=> {
+    const token = req.header('access-token') ?? null;
+  
+    let tokenObject = null;
+    let userEmail = null;
 
+    let success         = true;
+    let code            = 200;
+    let errorMessage    = null;
+    let response        = [];
+
+    const annoncesCollection    = await client.db(dbName).collection("annonces");
+  
+    const annonce              = await annoncesCollection.find({"status": "en cours"}).sort(sortByDate()).toArray();
+
+    if(!token){
+      success         = false;
+      code            = 403; 
+      errorMessage    = "Authentification Failed"
+    }else{
+      tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
+      if(!tokenObject){
+        success         = false;
+        code            = 500;
+        errorMessage    = "An error has occurred";
+      }
+    }
+
+    if (success) {
+      response = annonce
+    }
+
+
+
+    const data = {
+      "success": success,
+      "requestCode": code,
+      "error": errorMessage,
+      "response" : response
+    };
+
+    res.status(code).send(data);
+
+  });
 
 })();
 
