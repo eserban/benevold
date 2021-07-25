@@ -498,6 +498,57 @@ const client = new MongoClient(uri, {
 
   });
 
+  router.get('/user', async(req, res)=> {
+    const token = req.header('access-token') ?? null;
+  
+    let tokenObject = null;
+
+    let userId = req.query.id ?? null;
+    let userOid = new mongo.ObjectID(userId);
+
+    let success         = true;
+    let code            = 200;
+    let errorMessage    = null;
+    let response        = [];
+
+    const userCollection    = await client.db(dbName).collection("users");
+  
+    const user              = await annoncesCollection.find({"_id": userOid}).project(usersFindSchema()).toArray();
+
+    if(!token){
+      success         = false;
+      code            = 403; 
+      errorMessage    = "Authentification Failed"
+    }else if(!userId){
+      success         = false;
+      code            = 404; 
+      errorMessage    = "Veuille fournir un id de user"
+    }else{
+      tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
+      if(!tokenObject){
+        success         = false;
+        code            = 500;
+        errorMessage    = "An error has occurred";
+      }
+    }
+
+    if (success) {
+      response = user[0];
+    }
+
+
+
+    const data = {
+      "success": success,
+      "requestCode": code,
+      "error": errorMessage,
+      "response" : response
+    };
+
+    res.status(code).send(data);
+
+  });
+
 })();
 
 module.exports = router;
