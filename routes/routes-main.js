@@ -396,7 +396,7 @@ const client = new MongoClient(uri, {
       const messageCollection = await client.db(dbName).collection('message');
       let projection = messageFindSchema();
       let message = await messageCollection.find().project(projection).toArray();
-      response = message[0];
+      response = message[0].message;
     }
 
     const data = {
