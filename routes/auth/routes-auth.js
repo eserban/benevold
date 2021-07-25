@@ -36,6 +36,8 @@ const client = new MongoClient(uri, {
             let errorMessage    = null;
             let token           = null;
 
+            let user_id = null;
+
             const userCollection    = await client.db(dbName).collection("users");
             const user              = await userCollection.find({"email": login, "type": type }).limit(1).toArray();
 
@@ -62,6 +64,8 @@ const client = new MongoClient(uri, {
                 token = jwt.sign(tokenSignSchema, process.env.JWT_KEY, {
                     expiresIn: 86400 // expires in 24 hours
                 });
+
+                user_id = user[0]._id;
             }
 
             const data = {
@@ -69,7 +73,7 @@ const client = new MongoClient(uri, {
                 "requestCode": code,
                 "error": errorMessage,
                 "token" : token,
-                "user_id": user[0]._id
+                "user_id": user_id
             };
 
             res.status(code).send(data);

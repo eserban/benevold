@@ -411,18 +411,6 @@ const client = new MongoClient(uri, {
 
   /**
    * //la route pour recuperer les categories
-      GET /categories :
-      RES {
-          "categories" : [{ 
-            "nom_categorie" : "nom_categorie"
-          },{ 
-            "nom_categorie" : "nom_categorie"
-          },{ 
-            "nom_categorie" : "nom_categorie"
-          },{ 
-            "nom_categorie" : "nom_categorie"
-          }]
-      }
    */
 
   router.get('/categories',async (req, res) => {
