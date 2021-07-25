@@ -91,6 +91,8 @@ const client = new MongoClient(uri, {
     const email = req.body.email ?? null;
     const picLink = req.body.picLink ?? null;
 
+    console.log(req.body)
+
     const type = req.query.type == "android" ? "old" : "teen";
 
     let tokenObject = null;
