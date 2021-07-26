@@ -525,6 +525,10 @@ const client = new MongoClient(uri, {
       success         = false;
       code            = 404; 
       errorMessage    = "Veuille fournir un id de user"
+    }else if(user.length == 0){
+      success         = false;
+      code            = 401; 
+      errorMessage    = "Utilisateur non trouvé"
     }else{
       tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
       if(!tokenObject){
