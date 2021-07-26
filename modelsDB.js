@@ -101,7 +101,7 @@ function annonceSchema(userId, title, category, description, phone, email, conta
 
 function sortByDate(){
     return {
-        "date": -1
+        "date": 1
     }
 }
 
