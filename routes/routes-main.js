@@ -515,7 +515,7 @@ const client = new MongoClient(uri, {
 
     const userCollection    = await client.db(dbName).collection("users");
   
-    const user              = await annoncesCollection.find({"_id": userOid}).project(usersFindSchema()).toArray();
+    const user              = await userCollection.find({"_id": userOid}).project(usersFindSchema()).toArray();
 
     if(!token){
       success         = false;
