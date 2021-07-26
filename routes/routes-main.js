@@ -467,7 +467,7 @@ const client = new MongoClient(uri, {
 
     const annoncesCollection    = await client.db(dbName).collection("annonces");
   
-    const annonce              = await annoncesCollection.find({"status": "en cours"}).sort(sortByDate()).toArray();
+    const annonce              = await annoncesCollection.find({"status": "en cours", "takenBy": "nobody"}).sort(sortByDate()).toArray();
 
     if(!token){
       success         = false;
