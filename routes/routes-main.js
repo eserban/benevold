@@ -562,7 +562,7 @@ const client = new MongoClient(uri, {
 
     const annonceId = req.body.annonce_id ?? null;
     let annonceOid = new mongo.ObjectID(annonceId);
-    const userId = req.body.user ?? null;
+    const userId = req.body.user_id ?? null;
 
     let tokenObject = null;
     let userEmail = null;
