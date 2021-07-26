@@ -546,6 +546,7 @@ const client = new MongoClient(uri, {
       "error": errorMessage,
       "response" : response
     };
+    console.log(response);
 
     res.status(code).send(data);
 
