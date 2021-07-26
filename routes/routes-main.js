@@ -505,6 +505,7 @@ const client = new MongoClient(uri, {
     let tokenObject = null;
 
     let userId = req.query.id ?? null;
+    console.log(userId);
     let userOid = new mongo.ObjectID(userId);
 
     let success         = true;
