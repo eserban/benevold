@@ -96,7 +96,7 @@ function annonceSchema(userId, title, category, description, phone, email, conta
         "date": date,
         "time": time,
         "status": "en cours",
-        "taken_by": takenBy
+        "takenBy": takenBy
     }
 }
 
