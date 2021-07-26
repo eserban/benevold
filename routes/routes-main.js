@@ -156,7 +156,7 @@ const client = new MongoClient(uri, {
     const address = req.body.address ?? null;
     const date = req.body.date ?? null;
     const time = req.body.time ?? null;
-    const takenBy = "";
+    const takenBy = "nobody";
 
     const type = req.query.type == "android" ? "old" : "teen";
 
@@ -551,6 +551,60 @@ const client = new MongoClient(uri, {
       "response" : response
     };
     console.log(response);
+
+    res.status(code).send(data);
+
+  });
+
+  router.post('/annonce/taken', async (req, res) => {
+
+    const token = req.header('access-token') ?? null;
+
+    const annonceId = req.body.annonce_id ?? null;
+    let annonceOid = new mongo.ObjectID(annonceId);
+    const userId = req.body.user ?? null;
+
+    let tokenObject = null;
+    let userEmail = null;
+
+    let success         = true;
+    let code            = 200;
+    let errorMessage    = null;
+    let response        = [];
+
+    const annoncesCollection    = await client.db(dbName).collection("annonces");
+    const annonce              = await annoncesCollection.find({"_id": annonceOid}).toArray();
+
+    if(!token){
+      success         = false;
+      code            = 403; 
+      errorMessage    = "Authentification Failed"
+    }else if(!annonceId || !userId){
+      success         = false;
+      code            = 400; 
+      errorMessage    = "Veuillez introduire les informations de l'annonce"
+    }else if(annonce.length == 0){
+      success         = false;
+      code            = 402; 
+      errorMessage    = "Cette annonce n'a pas été trouvé";
+    }else{
+      tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
+      if(!tokenObject){
+        success         = false;
+        code            = 500;
+        errorMessage    = "An error has occurred";
+      }
+    }
+
+    if(success) {
+      await annoncesCollection.updateOne({ "_id":annonceOid}, {$set: {"takenBy": userId}});
+    }
+
+    const data = {
+      "success": success,
+      "requestCode": code,
+      "error": errorMessage
+    };
 
     res.status(code).send(data);
 
