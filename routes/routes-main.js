@@ -622,7 +622,7 @@ const client = new MongoClient(uri, {
     let errorMessage    = null;
     let response        = [];
 
-    const annoncesCollection    = await client.db(dbName).collection("users");
+    const annoncesCollection    = await client.db(dbName).collection("annonces");
   
     const annonce              = await annoncesCollection.find({"takenBy": userId}).project(sortByDate()).toArray();
 
