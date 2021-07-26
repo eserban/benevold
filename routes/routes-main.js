@@ -156,6 +156,7 @@ const client = new MongoClient(uri, {
     const address = req.body.address ?? null;
     const date = req.body.date ?? null;
     const time = req.body.time ?? null;
+    const takenBy = "";
 
     const type = req.query.type == "android" ? "old" : "teen";
 
@@ -188,7 +189,7 @@ const client = new MongoClient(uri, {
 
     if (success) {
       const annoncesCollection = await client.db(dbName).collection("annonces");
-      await annoncesCollection.insertOne(annonceSchema(userId, title, category, description, phone, email, contact, address, date, time));
+      await annoncesCollection.insertOne(annonceSchema(userId, title, category, description, phone, email, contact, address, date, time, takenBy));
     }
 
 

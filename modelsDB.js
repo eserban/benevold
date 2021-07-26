@@ -83,7 +83,7 @@ function categorieSchema(title) {
     }
 }
 
-function annonceSchema(userId, title, category, description, phone, email, contact, address, date, time) {
+function annonceSchema(userId, title, category, description, phone, email, contact, address, date, time, takenBy) {
     return {
         "user_id": userId,
         "title": title,
@@ -95,7 +95,8 @@ function annonceSchema(userId, title, category, description, phone, email, conta
         "address": address,
         "date": date,
         "time": time,
-        "status": "en cours"
+        "status": "en cours",
+        "taken_by": takenBy
     }
 }
 
