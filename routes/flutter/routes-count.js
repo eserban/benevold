@@ -185,6 +185,62 @@ const client = new MongoClient(uri, {
         res.status(code).send(data);
     });
 
+    router.get('/annonces/taken/user/date', async(req, res)=> {
+        const token = req.header('access-token') ?? null;
+      
+        let tokenObject = null;
+    
+    
+        let date = req.query.date ?? null;
+    
+        let success         = true;
+        let code            = 200;
+        let errorMessage    = null;
+        let response        = 0;
+    
+        const annoncesCollection    = await client.db(dbName).collection("annonces");
+      
+        const annonces              = await annoncesCollection.find({"takenBy": tokenObject._id, "status": "en cours", "date": date}).toArray();
+    
+        if(!token){
+          success         = false;
+          code            = 403; 
+          errorMessage    = "Authentification Failed"
+        }else if(!userId){
+          success         = false;
+          code            = 404; 
+          errorMessage    = "Veuille fournir un id de user"
+        }else if(annonce.length == 0){
+          success         = false;
+          code            = 401; 
+          errorMessage    = "Utilisateur non trouvé"
+        }else{
+          tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
+          if(!tokenObject){
+            success         = false;
+            code            = 500;
+            errorMessage    = "An error has occurred";
+          }
+        }
+    
+        if (success) {
+          response = annonces.length;
+        }
+    
+    
+    
+        const data = {
+          "success": success,
+          "requestCode": code,
+          "error": errorMessage,
+          "response" : response
+        };
+        console.log(response);
+    
+        res.status(code).send(data);
+    
+      });
+
 
 })();
 
