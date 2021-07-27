@@ -200,6 +200,8 @@ const client = new MongoClient(uri, {
             "user_id": response
         };
 
+        print(data);
+
         res.status(code).send(data);
 
     });
