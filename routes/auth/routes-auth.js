@@ -171,7 +171,7 @@ const client = new MongoClient(uri, {
         let code            = 200;
         let errorMessage    = null;
 
-        response = null;
+        response = 0;
 
         const userCollection    = await client.db(dbName).collection("users");
         const user              = await userCollection.find({"email": email, "type": type}).toArray();
