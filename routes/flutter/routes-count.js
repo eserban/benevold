@@ -198,9 +198,7 @@ const client = new MongoClient(uri, {
         let errorMessage    = null;
         let response        = 0;
     
-        const annoncesCollection    = await client.db(dbName).collection("annonces");
-      
-        const annonces              = await annoncesCollection.find({"takenBy": tokenObject._id, "status": "en cours", "date": date}).toArray();
+        
     
         if(!token){
           success         = false;
@@ -210,10 +208,6 @@ const client = new MongoClient(uri, {
           success         = false;
           code            = 404; 
           errorMessage    = "Veuille fournir un id de user"
-        }else if(annonce.length == 0){
-          success         = false;
-          code            = 401; 
-          errorMessage    = "Utilisateur non trouvé"
         }else{
           tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
           if(!tokenObject){
@@ -224,7 +218,9 @@ const client = new MongoClient(uri, {
         }
     
         if (success) {
-          response = annonces.length;
+            const annoncesCollection    = await client.db(dbName).collection("annonces");
+            const annonces              = await annoncesCollection.find({"takenBy": tokenObject._id, "status": "en cours", "date": date}).toArray();
+            response = annonces.length;
         }
     
     
