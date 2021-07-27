@@ -220,7 +220,7 @@ const client = new MongoClient(uri, {
         if (success) {
             const annoncesCollection    = await client.db(dbName).collection("annonces");
             console.log(tokenObject)
-            const annonces              = await annoncesCollection.find({"takenBy": tokenObject._id, "status": "en cours", "date": date}).toArray();
+            const annonces              = await annoncesCollection.find({"takenBy": tokenObject.id, "status": "en cours", "date": date}).toArray();
             response = annonces.length;
         }
     
