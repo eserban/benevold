@@ -219,7 +219,8 @@ const client = new MongoClient(uri, {
     
         if (success) {
             const annoncesCollection    = await client.db(dbName).collection("annonces");
-            const annonces              = await annoncesCollection.find({"takenBy": tokenObject._id, "status": "en cours", "date": date}).toArray();
+            const userOid = new mongo.ObjectID(tokenObject._id)
+            const annonces              = await annoncesCollection.find({"takenBy": userOid, "status": "en cours", "date": date}).toArray();
             response = annonces.length;
         }
     
