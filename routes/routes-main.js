@@ -666,7 +666,7 @@ const client = new MongoClient(uri, {
   });
 
 
-  router.get('/annonces/taken/user', async(req, res)=> {
+  router.get('/annonces/taken/user/date', async(req, res)=> {
     const token = req.header('access-token') ?? null;
   
     let tokenObject = null;
