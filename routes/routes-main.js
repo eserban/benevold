@@ -679,9 +679,7 @@ const client = new MongoClient(uri, {
     let errorMessage    = null;
     let response        = [];
 
-    const annoncesCollection    = await client.db(dbName).collection("annonces");
-  
-    const annonces              = await annoncesCollection.find({"takenBy": tokenObject.id, "status": "en cours", "date": date}).toArray();
+    
 
     if(!token){
       success         = false;
@@ -701,6 +699,9 @@ const client = new MongoClient(uri, {
     }
 
     if (success) {
+      const annoncesCollection    = await client.db(dbName).collection("annonces");
+  
+    const annonces              = await annoncesCollection.find({"takenBy": tokenObject.id, "status": "en cours", "date": date}).toArray();
       response = annonces;
     }
 
