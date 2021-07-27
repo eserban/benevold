@@ -204,7 +204,7 @@ const client = new MongoClient(uri, {
           success         = false;
           code            = 403; 
           errorMessage    = "Authentification Failed"
-        }else if(!userId){
+        }else if(!date){
           success         = false;
           code            = 404; 
           errorMessage    = "Veuille fournir un id de user"
