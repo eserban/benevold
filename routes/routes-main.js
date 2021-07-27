@@ -681,20 +681,16 @@ const client = new MongoClient(uri, {
 
     const annoncesCollection    = await client.db(dbName).collection("annonces");
   
-    const annonces              = await annoncesCollection.find({"takenBy": tokenObject._id, "status": "en cours", "date": date}).toArray();
+    const annonces              = await annoncesCollection.find({"takenBy": tokenObject.id, "status": "en cours", "date": date}).toArray();
 
     if(!token){
       success         = false;
       code            = 403; 
       errorMessage    = "Authentification Failed"
-    }else if(!userId){
+    }else if(!date){
       success         = false;
       code            = 404; 
       errorMessage    = "Veuille fournir un id de user"
-    }else if(annonce.length == 0){
-      success         = false;
-      code            = 401; 
-      errorMessage    = "Utilisateur non trouvé"
     }else{
       tokenObject = jwt.verify(token, process.env.JWT_KEY) ?? null;
       if(!tokenObject){
